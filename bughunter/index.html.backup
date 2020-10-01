@@ -1,13 +1,15 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bughunter</title>
+    <title>Drive the World</title>
 </head>
 <body>
+<div>
 <script src="/main.c39d6dcf.js"></script>
 <style>body {
         margin: 0;
-        background: #8ea48b;
+        background: #ffffff;
     }</style>
+</div>
 </body>
 </html>
