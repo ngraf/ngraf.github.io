@@ -4,9 +4,9 @@
 <body>
 
     <center>
-        <h3><img class="avatar" src="assets/images/avatar.jpg" style="vertical-align:middle">&nbsp;&nbsp;Hi, I'm <a href="https://github.com/ngraf">Norbert</a> and these are</h3>
+        <h2><img class="avatar" src="assets/images/avatar.jpg" style="vertical-align:middle">&nbsp;&nbsp;Hi, I'm <a href="https://github.com/ngraf">Norbert</a> and these are</h2>
 
-        <h1>My self-written <a href="https://phaser.io/phaser3">Phaser3</a> browser games</h1>
+        <h2>My self-written <a href="https://phaser.io/phaser3">Phaser3</a> browser games</h2>
 
         <!--
         <ul>
@@ -17,10 +17,10 @@
         </ul>
         -->
         <div class="container">
-            <div><a href="quizgame" title="My first game. It is a simple quiz game with not many features"><img class="thumbnail" src="assets/images/1_quizgame.jpg"><br/><br/><div>Quizgame!</a> <span class="date">(August 2020)</span></div><br/><br/></div>
-            <div><a href="bughunter" title="A simuluation of a test engineer's daily life"><img class="thumbnail" src="assets/images/2_bughunter.jpg"><br/><br/><div>Bughunter</a> <span class="date">(August 2020)</span></div><br/><br/></div>
-            <div><a href="https://phaser3-draw-together.herokuapp.com/" title="A co-op multiplayer drawing game"><img class="thumbnail" src="assets/images/3_drawtogether.jpg"><br/><br/><div>Draw Together</a> <span class="date">(September 2020)</span></div><br/><br/></div>
-        <div><a href="drivetheworld" title="A top-down car racing game that spans the whole world."><img class="thumbnail" src="assets/images/4_drivetheworld.jpg"><br/><br/><div>Drive the World</a> <span class="date">(September 2020)</span></div><br/><br/></div>
+            <div><a href="quizgame" title="My first game. It is a simple quiz game with not many features"><img class="thumbnail" src="assets/images/1_quizgame.jpg"><br/><br/><div class="caption">Quizgame!</a> <span class="date">(August 2020)</span></div></div>
+            <div><a href="bughunter" title="A simuluation of a test engineer's daily life"><img class="thumbnail" src="assets/images/2_bughunter.jpg"><br/><br/><div class="caption">Bughunter</a> <span class="date">(August 2020)</span></div></div>
+            <div><a href="https://phaser3-draw-together.herokuapp.com/" title="A co-op multiplayer drawing game"><img class="thumbnail" src="assets/images/3_drawtogether.jpg"><br/><br/><div class="caption">Draw Together</a> <span class="date">(September 2020)</span></div></div>
+        <div><a href="drivetheworld" title="A top-down car racing game that spans the whole world."><img class="thumbnail" src="assets/images/4_drivetheworld.jpg"><br/><br/><div class="caption">Drive the World</a> <span class="date">(September 2020)</span></div></div>
         </div>
     </center>
 
@@ -34,7 +34,7 @@
 
         * {
             font-family: Blessed, Verdana, serif;
-            font-size: 30px;
+            /*font-size: 30px;*/
             letter-spacing: 1px;
         }
 
@@ -59,9 +59,15 @@
             color: inherit;
         }
 
-        .container div {
+        .container > div {
             display: inline-block;
-            margin: 30px
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-top: 50px;
+        }
+
+        .caption {
+            font-size: 30px;
         }
     </style>
 
