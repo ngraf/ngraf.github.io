@@ -2,19 +2,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <h2>Content</h2>
+    <center>
+        <h3><img class="avatar" src="assets/images/avatar.jpg" style="vertical-align:middle">&nbsp;&nbsp;Hi, I'm Norbert and this is</h3>
 
-    Phaser3 games:
-    <ul>
-        <li>⁉️ <a href="quizgame">Quizgame</a> (My first Phaser3 game)</li>
-        <li>🐞 <a href="bughunter">Bughunter</a> (Simulation of a test engineer's life)</li>
-        <li>🖌 <a href="https://phaser3-draw-together.herokuapp.com/">Draw Together</a> (A multiplayer drawing game)</li>
-        <li>🚙 <a href="drivetheworld/">Drive the World</a> (A car racer)</li>
-    </ul>
+        <h3>My collection of self-written <a href="https://phaser.io/phaser3">Phaser3</a> games</h3>
 
+        <!--
+        <ul>
+            <li>⁉️ <a href="quizgame">Quizgame</a> (My first Phaser3 game)</li>
+            <li>🐞 <a href="bughunter">Bughunter</a> (Simulation of a test engineer's life)</li>
+            <li>🖌 <a href="https://phaser3-draw-together.herokuapp.com/">Draw Together</a> (A multiplayer drawing game)</li>
+            <li>🚙 <a href="drivetheworld/">Drive the World</a> (A car racer)</li>
+        </ul>
+        -->
+        <div>
+            <div><a href="quizgame"><img class="thumbnail" src="assets/images/1_quizgame.jpg"><br/><br/><div>Quizgame!</a> <span class="date">(August 2020)</span></div><br/><br/></div>
+            <div><a href="bughunter"><img class="thumbnail" src="assets/images/2_bughunter.jpg"><br/><br/><div>Bughunter</a> <span class="date">(August 2020)</span></div><br/><br/></div>
+            <div><a href="https://phaser3-draw-together.herokuapp.com/"><img class="thumbnail" src="assets/images/3_drawtogether.jpg"><br/><br/><div>Draw Together</a> <span class="date">(September 2020)</span></div></div><br/><br/></div>
+        <div><a href="drivetheworld"><img class="thumbnail" src="assets/images/4_drivetheworld.jpg"><br/><br/><div>Drive the World</a> <span class="date">(September 2020)</span></div><br/><br/></div>
+        </div>
+    </center>
     <style>
+
+        @font-face {
+            font-family: "Blueberry-Regular";
+
+            src: url("./assets/fonts/Blueberry.woff") format("woff"), /* Modern Browsers */
+                 url("./assets/fonts/Blueberry.woff2") format("woff2"); /* Modern Browsers */
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Blessed";
+
+            src: url("./assets/fonts/Blessed.ttf") format("truetype")
+            /*font-weight: normal;*/
+            /*font-style: normal;*/
+        }
+
         * {
-            font-family: Futura, Verdana, serif;
+            font-family: Blessed, Blueberry-Regular, Verdana, serif;
+            font-size: 30px;
+            letter-spacing: 1px;
+        }
+
+        .avatar {
+            width: 50px;
+            border-radius: 50%;
+        }
+        .thumbnail {
+            width: 350px;
+            border-radius: 10%;
+            border: 5px solid darkblue;
+        }
+
+        .date {
+            color: #cccccc
         }
     </style>
+
 </body>
