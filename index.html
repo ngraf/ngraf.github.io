@@ -2,19 +2,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <h2>Content</h2>
 
-    Phaser3 games:
-    <ul>
-        <li>⁉️ <a href="quizgame">Quizgame</a> (My first Phaser3 game)</li>
-        <li>🐞 <a href="bughunter">Bughunter</a> (Simulation of a test engineer's life)</li>
-        <li>🖌 <a href="https://phaser3-draw-together.herokuapp.com/">Draw Together</a> (A multiplayer drawing game)</li>
-        <li>🚙 <a href="drivetheworld/">Drive the World</a> (A car racer)</li>
-    </ul>
+    <center>
+        <h2><img class="avatar" src="assets/images/avatar.jpg" style="vertical-align:middle">&nbsp;&nbsp;Hi, I'm <a href="https://github.com/ngraf">Norbert</a> and these are</h2>
+
+        <h2>My self-written <a href="https://phaser.io/phaser3">Phaser3</a> browser games</h2>
+
+        <!--
+        <ul>
+            <li>⁉️ <a href="quizgame">Quizgame</a> (My first Phaser3 game)</li>
+            <li>🐞 <a href="bughunter">Bughunter</a> (Simulation of a test engineer's life)</li>
+            <li>🖌 <a href="https://phaser3-draw-together.herokuapp.com/">Draw Together</a> (A multiplayer drawing game)</li>
+            <li>🚙 <a href="drivetheworld/">Drive the World</a> (A car racer)</li>
+        </ul>
+        -->
+        <div class="container">
+            <div><a href="quizgame" title="My first game. It is a simple quiz game with not many features"><img class="thumbnail" src="assets/images/1_quizgame.jpg"><br/><br/><div class="caption">Quizgame!</a> <span class="date">(August 2020)</span></div></div>
+            <div><a href="bughunter" title="A simuluation of a test engineer's daily life"><img class="thumbnail" src="assets/images/2_bughunter.jpg"><br/><br/><div class="caption">Bughunter</a> <span class="date">(August 2020)</span></div></div>
+            <div><a href="https://phaser3-draw-together.herokuapp.com/" title="A co-op multiplayer drawing game"><img class="thumbnail" src="assets/images/3_drawtogether.jpg"><br/><br/><div class="caption">Draw Together</a> <span class="date">(September 2020)</span></div></div>
+        <div><a href="drivetheworld" title="A top-down car racing game that spans the whole world."><img class="thumbnail" src="assets/images/4_drivetheworld.jpg"><br/><br/><div class="caption">Drive the World</a> <span class="date">(September 2020)</span></div></div>
+        </div>
+    </center>
 
     <style>
+
+        @font-face {
+            font-family: "Blessed";
+
+            src: url("./assets/fonts/Blessed.ttf") format("truetype")
+        }
+
         * {
-            font-family: Futura, Verdana, serif;
+            font-family: Blessed, Verdana, serif;
+            /*font-size: 30px;*/
+            letter-spacing: 1px;
+        }
+
+        .avatar {
+            width: 50px;
+            border-radius: 50%;
+        }
+
+        .thumbnail { /* Make thumbnails for games cool */
+            /*width: 350px;*/
+            width: 90%;
+            max-width: 350px;
+            border-radius: 10%;
+            border: 5px solid black;
+        }
+
+        .date { /* Display dates when games are developed less important */
+            color: lightgray;
+        }
+
+        a { /* Remove annoying blue color from links */
+            color: inherit;
+        }
+
+        .container > div {
+            display: inline-block;
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-top: 50px;
+        }
+
+        .caption {
+            font-size: 30px;
         }
     </style>
+
 </body>
