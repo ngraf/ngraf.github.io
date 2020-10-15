@@ -23,7 +23,7 @@
         @font-face {
             font-family: "Blessed";
             src: url("./assets/fonts/Blessed.ttf") format("truetype");
-            font-display: swap;
+            /*font-display: swap;   <-- it was a nice idea to display page earlier, but it produces CLS */
         }
 
         * {
@@ -37,7 +37,8 @@
         }
 
         .thumbnail { /* Make thumbnails for games cool */
-            max-width: 350px;
+            max-width: 300px;
+            max-height: 300px;
             border-radius: 10%;
             border: 5px solid black;
         }
@@ -49,6 +50,7 @@
         a { /* Remove annoying blue color from links */
             color: inherit;
         }
+
 
         .container > div {
             display: inline-block;
