@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝</text></svg>">
+		<title>Travelmania</title>
+		<style>html,
+			body {
+				height: 100%;
+				margin: 0;
+			}</style>
+	</head>
+	<body scroll="no" style="overflow: hidden"> <!-- deactivate scrolling because it is used for scrolling inside Travelmania -->
+		<script src="/main.c39d6dcf.js"></script>
+	</body>
+</html>
