@@ -1,0 +1,52 @@
+id;name;country;lon;lat;description;picture
+Q173;Alabama;Q30;-86.7;32.7;🏛 Montgomery;https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Seal_of_Alabama.svg/300px-Seal_of_Alabama.svg.png
+Q797;Alaska;Q30;-150;64;🏛 Juneau;https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/State_Seal_of_Alaska.svg/300px-State_Seal_of_Alaska.svg.png
+Q816;Arizona;Q30;-111.656944;34.286667;🏛 Phoenix;https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Arizona-StateSeal.svg/300px-Arizona-StateSeal.svg.png
+Q1612;Arkansas;Q30;-92.2;34.8;🏛 Little Rock;https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Seal_of_Arkansas.svg/300px-Seal_of_Arkansas.svg.png
+Q99;Kalifornien;Q30;-120;37;🏛 Sacramento;https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Seal_of_California.svg/300px-Seal_of_California.svg.png
+Q1261;Colorado;Q30;-105.5;39;🏛 Denver;https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Seal_of_Colorado.svg/300px-Seal_of_Colorado.svg.png
+Q779;Connecticut;Q30;-72.7;41.6;🏛 Hartford;https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Seal_of_Connecticut.svg/300px-Seal_of_Connecticut.svg.png
+Q1393;Delaware;Q30;-75.5;39;🏛 Dover;https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Seal_of_Delaware.svg/300px-Seal_of_Delaware.svg.png
+Q812;Florida;Q30;-81.631666666667;28.133333333333;🏛 Tallahassee;https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Seal_of_Florida.svg/300px-Seal_of_Florida.svg.png
+Q1428;Georgia;Q30;-83.5;33;🏛 Atlanta;https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Seal_of_Georgia.svg/300px-Seal_of_Georgia.svg.png
+Q782;Hawaii;Q30;-157.8575;21.3075;🏛 Honolulu;https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Seal_of_the_State_of_Hawaii.svg/300px-Seal_of_the_State_of_Hawaii.svg.png
+Q1221;Idaho;Q30;-114;45;🏛 Boise;https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Seal_of_Idaho.svg/300px-Seal_of_Idaho.svg.png
+Q1204;Illinois;Q30;-89;40;🏛 Springfield;https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Seal_of_Illinois.svg/300px-Seal_of_Illinois.svg.png
+Q1415;Indiana;Q30;-86.216666666667;39.933333333333;🏛 Indianapolis;https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Indiana-StateSeal.svg/300px-Indiana-StateSeal.svg.png
+Q1546;Iowa;Q30;-93;42;🏛 Des Moines;https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Iowa-StateSeal.svg/300px-Iowa-StateSeal.svg.png
+Q1558;Kansas;Q30;-98;38.5;🏛 Topeka;https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Seal_of_Kansas.svg/300px-Seal_of_Kansas.svg.png
+Q1603;Kentucky;Q30;-85;37.5;🏛 Frankfort;https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Seal_of_Kentucky.svg/300px-Seal_of_Kentucky.svg.png
+Q1588;Louisiana;Q30;-92;31;🏛 Baton Rouge;https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Seal_of_Louisiana.svg/300px-Seal_of_Louisiana.svg.png
+Q724;Maine;Q30;-69;45.5;🏛 Augusta;https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Seal_of_Maine.svg/300px-Seal_of_Maine.svg.png
+Q1391;Maryland;Q30;-76.7;39;🏛 Annapolis;https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Seal_of_Maryland_%28reverse%29.svg/300px-Seal_of_Maryland_%28reverse%29.svg.png
+Q771;Massachusetts;Q30;-71.8;42.3;🏛 Boston;https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Seal_of_Massachusetts.svg/300px-Seal_of_Massachusetts.svg.png
+Q1166;Michigan;Q30;-85.58;44.34;🏛 Lansing;https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Seal_of_Michigan.svg/300px-Seal_of_Michigan.svg.png
+Q1527;Minnesota;Q30;-94;46;🏛 Saint Paul;https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Minnesota-StateSeal.svg/300px-Minnesota-StateSeal.svg.png
+Q1494;Mississippi;Q30;-90;33;🏛 Jackson;https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Seal_of_Mississippi_%282014%E2%80%93present%29.svg/300px-Seal_of_Mississippi_%282014%E2%80%93present%29.svg.png
+Q1581;Missouri;Q30;-92.5;38.5;🏛 Jefferson City;https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Seal_of_Missouri.svg/300px-Seal_of_Missouri.svg.png
+Q1212;Montana;Q30;-110;47;🏛 Helena;https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Seal_of_Montana.svg/300px-Seal_of_Montana.svg.png
+Q1553;Nebraska;Q30;-100;41.5;🏛 Lincoln;https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Seal_of_Nebraska.svg/300px-Seal_of_Nebraska.svg.png
+Q1227;Nevada;Q30;-117;39;🏛 Carson City;https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Seal_of_Nevada.svg/300px-Seal_of_Nevada.svg.png
+Q759;New Hampshire;Q30;-71.5;44;🏛 Concord;https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seal_of_New_Hampshire.svg/300px-Seal_of_New_Hampshire.svg.png
+Q1408;New Jersey;Q30;-74.5;40;🏛 Trenton;https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Seal_of_New_Jersey.svg/300px-Seal_of_New_Jersey.svg.png
+Q1522;New Mexico;Q30;-106;34;🏛 Santa Fe;https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Seal_of_New_Mexico.svg/300px-Seal_of_New_Mexico.svg.png
+Q1384;New York;Q30;-75;43;🏛 Albany;https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Seal_of_New_York_%28state%29.svg/300px-Seal_of_New_York_%28state%29.svg.png
+Q1454;North Carolina;Q30;-80;35.5;🏛 Raleigh;https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Seal_of_North_Carolina.svg/300px-Seal_of_North_Carolina.svg.png
+Q1207;North Dakota;Q30;-100.5;47.5;🏛 Bismarck;https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/NorthDakota-StateSeal.svg/300px-NorthDakota-StateSeal.svg.png
+Q1397;Ohio;Q30;-82.5;40.5;🏛 Columbus;https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Seal_of_Ohio_%28Official%29.svg/300px-Seal_of_Ohio_%28Official%29.svg.png
+Q1649;Oklahoma;Q30;-98;35.5;🏛 Oklahoma City;https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Seal_of_Oklahoma.svg/300px-Seal_of_Oklahoma.svg.png
+Q824;Oregon;Q30;-120.575;43.935833;🏛 Salem;https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Seal_of_Oregon.svg/300px-Seal_of_Oregon.svg.png
+Q1400;Pennsylvania;Q30;-77.5;41;🏛 Harrisburg;https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Seal_of_Pennsylvania.svg/300px-Seal_of_Pennsylvania.svg.png
+Q1387;Rhode Island;Q30;-71.5;41.7;🏛 Providence;https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Seal_of_Rhode_Island.svg/300px-Seal_of_Rhode_Island.svg.png
+Q1456;South Carolina;Q30;-81;34;🏛 Columbia;https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Seal_of_South_Carolina.svg/300px-Seal_of_South_Carolina.svg.png
+Q1211;South Dakota;Q30;-100;44.5;🏛 Pierre;https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/SouthDakota-StateSeal.svg/300px-SouthDakota-StateSeal.svg.png
+Q1509;Tennessee;Q30;-86;36;🏛 Nashville;https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Seal_of_Tennessee.svg/300px-Seal_of_Tennessee.svg.png
+Q1439;Texas;Q30;-100;31;🏛 Austin;https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Seal_of_Texas.svg/300px-Seal_of_Texas.svg.png
+Q829;Utah;Q30;-111.5;39.5;🏛 Salt Lake City;https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Seal_of_Utah.svg/300px-Seal_of_Utah.svg.png
+Q16551;Vermont;Q30;-72.7;44;🏛 Montpelier;https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Vermont_state_seal.svg/300px-Vermont_state_seal.svg.png
+Q1370;Virginia;Q30;-79;37.5;🏛 Richmond;https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Seal_of_Virginia.svg/300px-Seal_of_Virginia.svg.png
+Q1223;Washington;Q30;-120.5;47.5;🏛 Olympia;https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Seal_of_Washington.svg/300px-Seal_of_Washington.svg.png
+Q1371;West Virginia;Q30;-80.5;39;🏛 Charleston;https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Seal_of_West_Virginia.svg/300px-Seal_of_West_Virginia.svg.png
+Q1537;Wisconsin;Q30;-89.5;44.5;🏛 Madison;https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Seal_of_Wisconsin.svg/300px-Seal_of_Wisconsin.svg.png
+Q1214;Wyoming;Q30;-107.5;43;🏛 Cheyenne;https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Seal_of_Wyoming.svg/300px-Seal_of_Wyoming.svg.png
+Q61;Washington, D.C.;Q30;-77.036666666667;38.895;🏛 ;https://upload.wikimedia.org/wikipedia/commons/4/42/Seal-DC.png
