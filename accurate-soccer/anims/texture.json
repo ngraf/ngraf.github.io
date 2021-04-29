@@ -1,0 +1,39 @@
+{
+  "frames": {
+    "ball_frames.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 284,
+        "h": 44
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 284,
+        "h": 44
+      },
+      "sourceSize": {
+        "w": 288,
+        "h": 48
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.6",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 284,
+      "h": 44
+    },
+    "scale": 1
+  }
+}
