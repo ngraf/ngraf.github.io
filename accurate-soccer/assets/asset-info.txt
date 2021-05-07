@@ -2,9 +2,12 @@ Asset packs used for "Accurate Soccer":
 
 "Ball Sport Assets"
 -------------------
+Purchased here https://greenranger.itch.io/ball-sport-assetpack for 1$
 
 "pongoal"
 --------
-This is a privately purchased (10$) asset with name "Game Assets for Pong-like Game" by -wowu-
-Link: https://graphicriver.net/item/game-assets-for-ponglike-game/8170210
+Purchased here https://graphicriver.net/item/game-assets-for-ponglike-game/8170210 for 10$
 
+"bam.png"
+------
+Downloaded from https://www.pngegg.com/en/png-xvezm/download
