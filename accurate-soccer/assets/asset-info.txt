@@ -11,3 +11,7 @@ Purchased here https://graphicriver.net/item/game-assets-for-ponglike-game/81702
 "bam.png"
 ------
 Downloaded from https://www.pngegg.com/en/png-xvezm/download
+
+"muzzeflash3.png"
+-----
+Downloaded from https://github.com/photonstorm/phaser3-examples/blob/master/public/assets/particles/muzzleflash3.png
