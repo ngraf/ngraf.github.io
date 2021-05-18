@@ -1,0 +1,21 @@
+Asset packs used for "Accurate Soccer":
+
+"Ball Sport Assets"
+-------------------
+Purchased here https://greenranger.itch.io/ball-sport-assetpack for 1$
+
+"pongoal"
+--------
+Purchased here https://graphicriver.net/item/game-assets-for-ponglike-game/8170210 for 10$
+
+"bam.png"
+------
+Downloaded from https://www.pngegg.com/en/png-xvezm/download
+
+"muzzeflash3.png"
+-----
+Downloaded from https://github.com/photonstorm/phaser3-examples/blob/master/public/assets/particles/muzzleflash3.png
+
+-----
+
+ℹ️ All JSON animation files in folder `public/assets/anims` are created with the help of https://www.leshylabs.com/apps/sstool/

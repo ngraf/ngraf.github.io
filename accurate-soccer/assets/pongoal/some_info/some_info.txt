@@ -1,0 +1,44 @@
+------------------------------------------------------------------------------
+FONTS
+------------------------------------------------------------------------------
+
+Cloudy With a Chance of Love - for buttons texts
+http://www.dafont.com/cloudy-with-a-chance-of-love.font
+100% Free
+
+Super Mario 256 - for headers and scores
+http://www.dafont.com/super-mario-256.font
+100% Free
+
+
+------------------------------------------------------------------------------
+BALL
+------------------------------------------------------------------------------
+ball_frames.png
+6 frames, 48x48px (ball is 44x44px). 
+Rotates from left to right.
+This object should be rotated via code according to its direction.
+
+For example:
+When the ball is moving from left to right, object's angle is default: 0 degrees.
+From right to left: 180,
+Moves up: -90, moves down: 90 (of course compared with "default position").
+
+BALL's SHADOW
+----------------------
+Finally you should add shadow ball_shadow.png under ball image.
+Position of the shadow in the file fits to the ball, so if you draw ball in position (x,y) [left-top corner],
+you should draw shadow in the same (x,y) position.
+
+
+------------------------------------------------------------------------------
+PAUSE BUTTON
+------------------------------------------------------------------------------
+It's located in the center of the court. Look at file:
+court_center_btn_pause.png and similar.
+
+
+------------------------------------------------------------------------------
+If you have any question contact with me through http://graphicriver.net/user/-wowu-
+Regards,
+wowu
