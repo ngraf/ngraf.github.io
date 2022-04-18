@@ -2,15 +2,15 @@
 	<head>
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚓️</text></svg>">
 		<title>Raw Kubernetes</title>
-		<link rel="preload" as="font" href="/Nightmare.e5d16e14.ttf" type="font/ttf">
-		<link rel="preload" as="font" href="/KGRedHands.5ac5060a.ttf" type="font/ttf">
+		<link rel="preload" as="font" href="Nightmare.e5d16e14.ttf" type="font/ttf">
+		<link rel="preload" as="font" href="KGRedHands.5ac5060a.ttf" type="font/ttf">
 		<style>@font-face {
 				font-family: 'CustomFontNightmare';
-				src: url('/Nightmare.e5d16e14.ttf');
+				src: url('Nightmare.e5d16e14.ttf');
 			}
 			@font-face {
 				font-family: 'KGRedHands';
-				src: url('/KGRedHands.5ac5060a.ttf');
+				src: url('KGRedHands.5ac5060a.ttf');
 			}</style>
 	</head>
 	<body>
