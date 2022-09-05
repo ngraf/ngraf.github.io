@@ -9,5 +9,14 @@
 	</head>
 	<body>
 		<script src="/main.c39d6dcf.js"></script>
+		<script>// Check touch input
+// Taken from https://browsergameshub.com/check-player-is-on-mobile-or-desktop/
+// How it works? Try to force player to click sth in the very beginning.
+// Then the listener is triggered on touch devices and "IS_TOUCH" is globally set.
+// Within Phaser3 you can then check if "IS_TOUCH" is true and behave accordingly.
+var IS_TOUCH = false;
+window.addEventListener('touchstart', function () {
+  IS_TOUCH = true;
+});</script>
 	</body>
 </html>
