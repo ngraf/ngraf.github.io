@@ -1,0 +1,46 @@
+{"frames": {
+
+
+"crow_die_strip16":
+{
+	"frame": {"x":231,"y":1,"w":629,"h":18},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":12,"w":629,"h":18},
+	"sourceSize": {"w":640,"h":40}
+},
+	"crow_fly_strip6":
+	{
+		"frame": {"x":1,"y":1,"w":228,"h":22},
+		"rotated": false,
+		"trimmed": true,
+		"spriteSourceSize": {"x":6,"y":8,"w":228,"h":22},
+		"sourceSize": {"w":240,"h":40}
+	},
+
+"crow_hurt_strip5":
+{
+	"frame": {"x":1092,"y":1,"w":189,"h":17},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":12,"w":189,"h":17},
+	"sourceSize": {"w":200,"h":40}
+},
+"crow_soar_strip6":
+{
+	"frame": {"x":862,"y":1,"w":228,"h":18},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":11,"w":228,"h":18},
+	"sourceSize": {"w":240,"h":40}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "crow.png",
+	"format": "RGBA8888",
+	"size": {"w":1282,"h":24},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:db77a05a4de1b1f92f1925eec11bfe62:9357471551fd068b399a132cfc7b4ad9:578f250bbc179930344783a088515f82$"
+}
+}
