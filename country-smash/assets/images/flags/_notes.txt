@@ -1,0 +1,14 @@
+The flags are labeled based on their respective country's ISO 3166 country code.
+
+Country codes and flags were referenced from:
+https://flaglog.com/country-codes
+
+Feel free to use the flags however you'd like. Credit is not required, but appreciated. (Credit DaFluffyPotato if you choose to credit.)
+
+Some Additional Notes:
+
+There are some codes that intentionally do not have flags. For these, the "unknown.png" flag should be used instead.
+
+Alternate flags for Afghanistan and Saudi Arabia are also provided. The base Afghanistan flag represents the Islamic Republic of Afghanistan black while the white flag represents the Islamic Emirate of Afghanistan that is not recognized internationally but controls the country. The base Saudi Arabia flag is what most people will recognize, but the pixelized form may be considered blasphemous, so the alternative can be used instead if that's a concern.
+
+The website linked above provides more details on other flags that may be politically inflammatory (among other useful information such as the country names).
