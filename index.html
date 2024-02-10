@@ -29,6 +29,19 @@
         </div>
     </center>
 
+    <script>
+        // Add class "displayAnimation" to div that contains class "hoverImg" when the image is in viewport (mobile only. this criteria is handled in CSS rules)
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                // console.log(entry.isIntersecting)
+                entry.target.classList.toggle("displayAnimation", entry.isIntersecting);
+            });
+        }, {threshold: 1}); // info: threshold 1 means 100% of the image has to be in the viewport to trigger the event
+        document.querySelectorAll('.imageBox').forEach(function(img) {
+            observer.observe(img);
+        });
+    </script>
+
     <style>
 
         @font-face {
@@ -90,6 +103,13 @@
 
         .imageBox:hover .hoverImg {
             display: block;
+        }
+
+        /* On mobile device show hoverImg when user has image in viewport */
+        @media (hover: none), (pointer: coarse) {
+            .imageBox.displayAnimation .hoverImg {
+                display: block;
+            }
         }
     </style>
 
