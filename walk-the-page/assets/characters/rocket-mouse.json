@@ -1,0 +1,92 @@
+{"frames": {
+
+"flame1.png":
+{
+	"frame": {"x":0,"y":0,"w":44,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":64},
+	"sourceSize": {"w":44,"h":64}
+},
+"flame2.png":
+{
+	"frame": {"x":44,"y":0,"w":44,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":64},
+	"sourceSize": {"w":44,"h":64}
+},
+"rocketmouse_dead01.png":
+{
+	"frame": {"x":88,"y":0,"w":134,"h":126},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":134,"h":126},
+	"sourceSize": {"w":134,"h":126}
+},
+"rocketmouse_dead02.png":
+{
+	"frame": {"x":222,"y":0,"w":134,"h":126},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":134,"h":126},
+	"sourceSize": {"w":134,"h":126}
+},
+"rocketmouse_fall01.png":
+{
+	"frame": {"x":356,"y":0,"w":134,"h":126},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":134,"h":126},
+	"sourceSize": {"w":134,"h":126}
+},
+"rocketmouse_fly01.png":
+{
+	"frame": {"x":490,"y":0,"w":134,"h":126},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":134,"h":126},
+	"sourceSize": {"w":134,"h":126}
+},
+"rocketmouse_run01.png":
+{
+	"frame": {"x":624,"y":0,"w":134,"h":126},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":134,"h":126},
+	"sourceSize": {"w":134,"h":126}
+},
+"rocketmouse_run02.png":
+{
+	"frame": {"x":758,"y":0,"w":134,"h":126},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":134,"h":126},
+	"sourceSize": {"w":134,"h":126}
+},
+"rocketmouse_run03.png":
+{
+	"frame": {"x":892,"y":0,"w":134,"h":126},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":134,"h":126},
+	"sourceSize": {"w":134,"h":126}
+},
+"rocketmouse_run04.png":
+{
+	"frame": {"x":1026,"y":0,"w":134,"h":126},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":134,"h":126},
+	"sourceSize": {"w":134,"h":126}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "rocket-mouse.png",
+	"format": "RGBA8888",
+	"size": {"w":1160,"h":126},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:dbfcf5b65f8b118f74efca73bebd2c0b:366828f82c7ab69843faa0e38f7f7abe:f5fcb860457015f4b9535e5c0e3fc81c$"
+}
+}
