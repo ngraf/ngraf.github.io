@@ -12,7 +12,7 @@
 
       body {
          font-family: Blessed, Verdana, serif;
-            font-size: 22px;
+         font-size: 22px;
          letter-spacing: 1px;
          background-color: var(--background-color);
          color: var(--text-color);
@@ -59,6 +59,7 @@
          border-radius: 5px;
          overflow-x: auto;
          font-size: 12px;
+         position: relative;
       }
 
       @media (prefers-color-scheme: dark) {
@@ -69,6 +70,17 @@
 
       kbd {
          font-size: 1rem;
+      }
+
+      .copy-button {
+         display: block;
+         margin-top: 10px;
+         padding: 5px 10px;
+         background-color: #000000;
+         color: #ffffff;
+         border: none;
+         border-radius: 5px;
+         cursor: pointer;
       }
    </style>
 </head>
@@ -81,8 +93,9 @@
    <ol>
       <li>Open the page you want to walk in your browser. For example: <a href="https://ngraf.github.io" target="_blank">https://ngraf.github.io</a></li>
       <li>Open the dev tools in your browser. In Chrome for example, you can do this by right-clicking on the page and selecting "Inspect" or by pressing <kbd>Ctrl + Shift + I</kbd> (Windows/Linux) or <kbd>Cmd + Option + I</kbd> (Mac). Then go to the "Console" tab.</li>
-      <li>Copy and paste the following code into the console and press Enter:</li>
-      <pre class="prettyprint">
+      <li>Copy and paste the following code into the console and press Enter: </li>
+      <button class="copy-button" onclick="copyToClipboard(this)">Copy to clipboard</button>
+      <pre class="prettyprint" id="console-code">
 var style = document.createElement('style');
 style.innerHTML = `
 canvas {
@@ -98,7 +111,8 @@ var script = document.createElement('script');
 script.src = 'https://ngraf.github.io/walk-the-page/index.b7a05eb9.js';
 script.defer = true;
 document.body.appendChild(script);
-            </pre>
+      </pre>
+
       <li>Press Enter.</li>
       <li>And off you go. Have fun!</li>
    </ol>
@@ -106,7 +120,8 @@ document.body.appendChild(script);
    <h2>Variant 2 via browser bookmarklet</h2>
    <ol>
       <li>Create a new bookmark in your browser with this content:</li>
-      <pre class="prettyprint">
+      <button class="copy-button" onclick="copyToClipboard(this)">Copy to clipboard</button>
+      <pre class="prettyprint" id="bookmarklet">
 javascript:(function() {
 var style = document.createElement('style');
 style.innerHTML = `
@@ -124,11 +139,30 @@ script.src = 'https://ngraf.github.io/walk-the-page/index.b7a05eb9.js';
 script.defer = true;
 document.body.appendChild(script);
 })();
-            </pre>
+      </pre>
       <li>Open the page you want to walk in your browser. For example: <a href="https://ngraf.github.io" target="_blank">https://ngraf.github.io</a></li>
       <li>Press the bookmark you just created.</li>
       <li>And off you go. Have fun!</li>
    </ol>
 </div>
+
+<script>
+   function copyToClipboard(button) {
+      const pre = button.nextElementSibling;
+      if (pre && pre.tagName === 'PRE') {
+         const code = pre.textContent;
+         navigator.clipboard.writeText(code).then(() => {
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+               button.textContent = 'Copy to clipboard';
+            }, 2000);
+         }).catch(err => {
+            console.error('Failed to copy: ', err);
+         });
+      } else {
+         console.error('Failed to find the code block');
+      }
+   }
+</script>
 </body>
 </html>
