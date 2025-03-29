@@ -184789,11 +184789,20 @@ class MainGame extends Phaser.Scene {
             this.createPlayer();
             this.createControls();
             this.createCollisionMap();
+            this.createFog();
             // Add event listener for mouse click
             this.input.on("pointerdown", (pointer)=>{
                 if (!this.isPlayerPlaced) {
                     this.isPlayerPlaced = true;
                     this.hintText.destroy();
+                    this.tweens.add({
+                        targets: this.fog,
+                        alpha: 0,
+                        duration: 1000,
+                        onComplete: ()=>{
+                            this.fog.setVisible(false); // Hide the fog after fading out
+                        }
+                    });
                     const playerBody = this.player.body;
                     playerBody.setEnable(true); // Enable the physics body when placed
                     this.weapon = new (0, _weaponDefault.default)(this, this.player); // Initialize the weapon
@@ -184826,6 +184835,19 @@ class MainGame extends Phaser.Scene {
                     });
                 } else this.weapon.fire(pointer.worldX, pointer.worldY); // Fire the weapon
             });
+            //Show fog while dragging the mouse to determine the spawn position
+            this.input.on("pointermove", (pointer)=>{
+                if (!this.isPlayerPlaced) {
+                    this.fog.setVisible(true);
+                    this.tweens.add({
+                        targets: this.fog,
+                        alpha: 0.5,
+                        duration: 1000
+                    });
+                    this.player.setPosition(pointer.worldX, pointer.worldY);
+                    this.hintText.setPosition(pointer.worldX, pointer.worldY - this.player.height - 20);
+                }
+            });
         });
     }
     createWebpageImage() {
@@ -184840,7 +184862,7 @@ class MainGame extends Phaser.Scene {
         playerBody.setCollideWorldBounds(true);
         playerBody.setEnable(false); // Disable the physics body initially
         this.player.setScale((0, _configDefault.default).CHARACTER_SCALE);
-        this.player.setDepth(1); // Set depth higher than the blast impacts
+        this.player.setDepth(1000); // Set depth higher than the fog
         // Add hint text
         this.hintText = this.add.text(this.input.activePointer.worldX, this.input.activePointer.worldY - this.player.height - 20, "Click to spawn", {
             fontSize: "16px",
@@ -184850,6 +184872,13 @@ class MainGame extends Phaser.Scene {
     }
     createControls() {
         this.cursors = this.input.keyboard.createCursorKeys();
+        // Add WASD controls as alternative to cursor keys to move the mouse
+        this.input.keyboard.addKeys({
+            up: "W",
+            left: "A",
+            down: "S",
+            right: "D"
+        });
     }
     createCollisionMap() {
         // Create a hidden canvas to analyze pixels
@@ -184905,6 +184934,13 @@ class MainGame extends Phaser.Scene {
             COLLISION_INDEX
         ]); // Enable collisions for tiles with index 1
         this.physics.add.collider(this.player, this.collisionLayer);
+    }
+    createFog() {
+        this.fog = this.add.graphics();
+        this.fog.fillStyle(0x808080, 0.5); // Grey color with 50% opacity
+        this.fog.fillRect(0, 0, this.scale.width, this.scale.height);
+        this.fog.setDepth(999); // Ensure the fog is above all other objects
+        this.fog.setVisible(false); // Initially hide the fog
     }
     update(time, delta) {
         if (!this.isPlayerPlaced) {
