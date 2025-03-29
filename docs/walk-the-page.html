@@ -1,17 +1,88 @@
-<img class="thumbnail" src="../assets/gifs/18_walkthepage.gif" loading="lazy">
-<h1>How to walk any page</h1>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Walk the Page</title>
+   <style>
+      @font-face {
+         font-family: "Blessed";
+         src: url("../assets/fonts/Blessed.ttf") format("truetype");
+      }
 
+      body {
+         font-family: Blessed, Verdana, serif;
+            font-size: 22px;
+         letter-spacing: 1px;
+         background-color: var(--background-color);
+         color: var(--text-color);
+         transition: background-color 0.3s, color 0.3s;
+      }
 
-<h2>Variant 1 via browser console</h2>
+      :root {
+         --background-color: #ffffff;
+         --text-color: #000000;
+      }
 
-1) Open the page you want to walk in your browser. For example: https://ngraf.github.io
+      @media (prefers-color-scheme: dark) {
+         :root {
+            --background-color: #121212;
+            --text-color: #ffffff;
+         }
+      }
 
-2) Open the dev tools in your browser. In Chrome, you can do this by right-clicking on the page and selecting "Inspect" or by pressing `Ctrl + Shift + I` (Windows/Linux) or `Cmd + Option + I` (Mac). Then go to the "Console" tab.
+      .container {
+         max-width: 1200px;
+         margin: 0 auto;
+         padding: 20px;
+      }
 
-3) Copy and paste the following code into the console and press Enter:
+      h1, h2 {
+         text-align: center;
+      }
 
-<pre class="prettyprint">
-    ```javascript
+      .thumbnail {
+         display: block;
+         margin: 0 auto;
+         max-width: 100%;
+         border-radius: 10px;
+         transition: transform 0.3s;
+      }
+
+      .thumbnail:hover {
+         transform: scale(1.05);
+      }
+
+      pre.prettyprint {
+         background-color: #f5f5f5;
+         padding: 10px;
+         border-radius: 5px;
+         overflow-x: auto;
+         font-size: 12px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+         pre.prettyprint {
+            background-color: #333;
+         }
+      }
+
+      kbd {
+         font-size: 1rem;
+      }
+   </style>
+</head>
+<body>
+<div class="container">
+   <img class="thumbnail" src="../assets/gifs/18_walkthepage.gif" loading="lazy" alt="Walk the Page GIF">
+   <h1>How to walk any page</h1>
+
+   <h2>Variant 1 via browser console</h2>
+   <ol>
+      <li>Open the page you want to walk in your browser. For example: <a href="https://ngraf.github.io" target="_blank">https://ngraf.github.io</a></li>
+      <li>Open the dev tools in your browser. In Chrome for example, you can do this by right-clicking on the page and selecting "Inspect" or by pressing <kbd>Ctrl + Shift + I</kbd> (Windows/Linux) or <kbd>Cmd + Option + I</kbd> (Mac). Then go to the "Console" tab.</li>
+      <li>Copy and paste the following code into the console and press Enter:</li>
+      <pre class="prettyprint">
 var style = document.createElement('style');
 style.innerHTML = `
 canvas {
@@ -27,41 +98,37 @@ var script = document.createElement('script');
 script.src = 'https://ngraf.github.io/walk-the-page/index.b7a05eb9.js';
 script.defer = true;
 document.body.appendChild(script);
-```
-</pre>
+            </pre>
+      <li>Press Enter.</li>
+      <li>And off you go. Have fun!</li>
+   </ol>
 
+   <h2>Variant 2 via browser bookmarklet</h2>
+   <ol>
+      <li>Create a new bookmark in your browser with this content:</li>
+      <pre class="prettyprint">
+javascript:(function() {
+var style = document.createElement('style');
+style.innerHTML = `
+canvas {
+z-index: 10;
+position: absolute;
+top: 0;
+left: 0;
+}
+`;
+document.head.appendChild(style);
 
-4) Press Enter.
-
-5) Now you should get asked where to spawn the mouse. Click to spawn and click again to shoot stuff. Have fun!
-
-
-<h2>Variant 2 with browser bookmarklet</h2>
-
-1) Open the page you want to walk in your browser. For example: https://ngraf.github.io
-
-2) Create a new bookmark in your browser with this content:
-
-<pre class="prettyprint">
-   javascript:(function() {
-   var style = document.createElement('style');
-   style.innerHTML = `
-     canvas {
-        z-index: 10;
-        position: absolute;
-        top: 0;
-        left: 0;
-     }
-   `;
-   document.head.appendChild(style);
-
-   var script = document.createElement('script');
-   script.src = 'https://ngraf.github.io/walk-the-page/index.b7a05eb9.js';
-   script.defer = true;
-   document.body.appendChild(script);
-   })();
-</pre>
-
-3) Press the bookmark you just created.
-
-4) Now you should get asked where to spawn the mouse. Click to spawn and click again to shoot stuff. Have fun!
+var script = document.createElement('script');
+script.src = 'https://ngraf.github.io/walk-the-page/index.b7a05eb9.js';
+script.defer = true;
+document.body.appendChild(script);
+})();
+            </pre>
+      <li>Open the page you want to walk in your browser. For example: <a href="https://ngraf.github.io" target="_blank">https://ngraf.github.io</a></li>
+      <li>Press the bookmark you just created.</li>
+      <li>And off you go. Have fun!</li>
+   </ol>
+</div>
+</body>
+</html>
