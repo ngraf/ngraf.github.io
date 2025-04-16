@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⭕️</text></svg>">
+		<title>Draw a Circle</title>
+		<!-- Load custom font -->
+		<link rel="preload" as="font" href="/KGRedHands.9964c68a.ttf" type="font/ttf">
+		<style>@font-face {
+  font-family: CustomFontKGRedHands;
+  src: url("KGRedHands.9964c68a.ttf");
+}
+
+</style>
+	</head>
+	<body>
+		<!-- Workaround to load custom font before the game loads. Otherwise initial texts don't have the custom font yet. Taken from https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3 -->
+		<div style="visibility: hidden; font-family: CustomFontKGRedHands; position: absolute; left: -1000px">.</div>
+
+		<!-- Load Game -->
+		<script src="/index.b7a05eb9.js" defer=""></script>
+	</body>
+</html>
