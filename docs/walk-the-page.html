@@ -144,6 +144,11 @@ document.body.appendChild(script);
       <li>Press the bookmark you just created.</li>
       <li>And off you go. Have fun!</li>
    </ol>
+
+    <h2>Variant 3 - Walk this page</h2>
+    <ol>
+        <li>Click <u><a href="#" onclick="walkThisPage(event)">here</a></u> to walk this page</li>
+    </ol>
 </div>
 
 <script>
@@ -163,6 +168,30 @@ document.body.appendChild(script);
          console.error('Failed to find the code block');
       }
    }
+
+    function walkThisPage(event) {
+        event.preventDefault();
+        // scroll to top smoothly
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        var style = document.createElement('style');
+        style.innerHTML = `
+        canvas {
+            z-index: 10;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        `;
+        document.head.appendChild(style);
+
+        var script = document.createElement('script');
+        script.src = 'https://ngraf.github.io/walk-the-page/index.b7a05eb9.js';
+        script.defer = true;
+        document.body.appendChild(script);
+    }
 </script>
 </body>
 </html>
