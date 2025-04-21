@@ -238713,15 +238713,21 @@ var _gameMasterFace = require("~/game/GameMasterFace");
 var _gameMasterFaceDefault = parcelHelpers.interopDefault(_gameMasterFace);
 var _inputHandler = require("~/game/InputHandler");
 var _inputHandlerDefault = parcelHelpers.interopDefault(_inputHandler);
+var _button = require("~/library/designsystem/Button");
+var _buttonDefault = parcelHelpers.interopDefault(_button);
+var _colorKeys = require("~/library/designsystem/consts/ColorKeys");
+var _colorKeysDefault = parcelHelpers.interopDefault(_colorKeys);
 class GameMaster {
     constructor(mainScene){
         this.currentCategory = "";
         this.availableCategories = [];
+        this.theme = "";
         this.mainScene = mainScene;
         this.gameMasterFace = new (0, _gameMasterFaceDefault.default)(mainScene);
     }
-    startGame(showIntro = true) {
-        const startGame = ()=>{
+    startGame(showIntro = true, theme = (0, _configDefault.default).DEFAULT_THEME) {
+        if (theme) this.theme = theme;
+        const finalStartGame = ()=>{
             this._dealLettersToPlayer();
             this._nameNewCategory();
             // Create input
@@ -238731,15 +238737,37 @@ class GameMaster {
             // Set game master face to happy
             this.gameMasterFace.say((0, _configDefault.default).INTRO_TEXT, "\uD83D\uDE42");
             this.mainScene.input.once("pointerdown", ()=>{
-                startGame();
+                if (!theme) this.chooseTheme();
+                else finalStartGame();
             });
-        } else startGame();
+        } else if (!theme) this.chooseTheme();
+        else finalStartGame();
     }
     endGame() {
         // Start "End" scene
         this.mainScene.scene.start((0, _sceneKeysDefault.default).END);
         // Stop game
         this.mainScene.scene.stop((0, _sceneKeysDefault.default).GAME);
+    }
+    chooseTheme() {
+        this.gameMasterFace.say("W\xe4hle ein Thema!", "\uD83E\uDD14");
+        const themes = Object.keys((0, _configDefault.default).CATEGORIES);
+        // Show a button for each theme
+        const buttons = [];
+        themes.forEach((theme, index)=>{
+            const button = new (0, _buttonDefault.default)(this.mainScene, this.mainScene.sys.canvas.width / 2, 300 + index * 100, 400, 80, theme, ()=>{
+                // Destroy all buttons
+                buttons.forEach((button)=>{
+                    button.destroy();
+                });
+                this.startGame(false, theme);
+            }, {
+                fontColor: (0, _colorKeysDefault.default).BLACK,
+                fontSize: "48px"
+            });
+            this.mainScene.add.existing(button);
+            buttons.push(button);
+        });
     }
     /**
      * Check if the answer is accepted for the current category
@@ -238805,7 +238833,10 @@ class GameMaster {
         });
     }
     _nameNewCategory() {
-        if (this.availableCategories.length === 0) this.availableCategories = (0, _configDefault.default).CATEGORIES;
+        if (this.availableCategories.length === 0) {
+            if (!(0, _configDefault.default).CATEGORIES[this.theme]) throw new Error(`No categories available for theme "${this.theme}".`);
+            this.availableCategories = (0, _configDefault.default).CATEGORIES[this.theme];
+        }
         // Pick any category from available  categories
         this.currentCategory = this.availableCategories[Math.floor(Math.random() * this.availableCategories.length)];
         // Remove the category from available categories
@@ -238981,7 +239012,7 @@ class GameMaster {
 }
 exports.default = GameMaster;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","~/game/Config":"8FUdF","tslib":"lRdW5","~/game/AiProxy":"jfej0","~/consts/SceneKeys":"8GRkC","~/game/GameMasterFace":"BadaM","~/game/InputHandler":"aY7Y5"}],"8FUdF":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","~/game/Config":"8FUdF","tslib":"lRdW5","~/game/AiProxy":"jfej0","~/consts/SceneKeys":"8GRkC","~/game/GameMasterFace":"BadaM","~/game/InputHandler":"aY7Y5","~/library/designsystem/Button":"kAH30","~/library/designsystem/consts/ColorKeys":"bJ3vN"}],"8FUdF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorKeys = require("../../../../library/designsystem/consts/ColorKeys");
@@ -239016,16 +239047,76 @@ Config.INPUT_FIELD_FONT_COLOR_INCORRECT = (0, _colorKeysDefault.default).RED_MIL
 Config.SPEECH_BUBBLE_HEIGHT = 70;
 // 🎲 Game
 Config.AI_PROMPT_VALIDATE_ANSWER = "Du bist ein Spielleiter einer Partie Stadt Land Fluss. Die Kategorie lautet: {{category}}. Der Spieler hat die Antwort {{answer}} gegeben. Ist die Antwort korrekt? Antworte mit ja oder nein.";
-Config.CATEGORIES = [
-    "Stadt",
-    "Land",
-    "Fluss",
-    "Tier",
-    "Beruf",
-    "Pflanze",
-    "Automarke",
-    "Vorname"
-];
+Config.DEFAULT_THEME = undefined;
+Config.CATEGORIES = {
+    Standard: [
+        "Stadt",
+        "Land",
+        "Fluss",
+        "Tier",
+        "Beruf",
+        "Pflanze",
+        "Automarke",
+        "Vorname"
+    ],
+    "⛱️ Urlaub": [
+        "Urlaubsland",
+        "Am Flughafen",
+        "Am Strand",
+        "Im Hotelzimmer",
+        "Sprache",
+        "Ein nicht-europ\xe4isches Essen",
+        "Reiseveranstalter",
+        "Fluggesellschaft",
+        "Im Rucksack f\xfcr Tagesausflug",
+        "Im Restaurant",
+        "Eine W\xe4hrung"
+    ],
+    "\uD83C\uDF54 Essen": [
+        "Obst",
+        "Gem\xfcse",
+        "Getr\xe4nk",
+        "Gericht",
+        "Zutat",
+        "K\xfcchenutensil",
+        "Kochtechnik",
+        "Restaurant"
+    ],
+    "\uD83C\uDFBE Sport": [
+        "Olympische Sportart",
+        "Olympischer Sportler",
+        "Sportger\xe4t",
+        "Sportveranstaltung",
+        "Sportverein",
+        "Fu\xdfballtrainer",
+        "Hygieneartikel",
+        "Sportmarke",
+        "Wintersport"
+    ],
+    "\uD83C\uDFB6 Musik": [
+        "Musikrichtung",
+        "Musikinstrument",
+        "Lied",
+        "S\xe4nger",
+        "Band",
+        "Album",
+        "Konzerthalle",
+        "Material f\xfcr Instrument",
+        "ESC-Kandidat",
+        "Musikfestival"
+    ],
+    "\uD83D\uDC34 Pferde": [
+        "Fellfarbe",
+        "Pferderasse",
+        "Pferdefilm",
+        "Reiternation",
+        "Im Reitstall",
+        "Auf dem Turnier",
+        "Name f\xfcr ein Pferd",
+        "Pferdeausr\xfcstung",
+        "Tierkrankheit"
+    ]
+};
 Config.START_LETTER_COUNT = 6;
 Config.MAXIMUM_LETTER_COUNT = 7;
 Config.GAME_MASTER_REACTION_DURATION = 1500;
@@ -239752,7 +239843,478 @@ class InputHandler {
 }
 exports.default = InputHandler;
 
-},{"tslib":"lRdW5","~/game/Config":"8FUdF","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"i2nBT":[function(require,module,exports) {
+},{"tslib":"lRdW5","~/game/Config":"8FUdF","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kAH30":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _popupInfo = require("./PopupInfo");
+var _popupInfoDefault = parcelHelpers.interopDefault(_popupInfo);
+var _config = require("./Config");
+var _configDefault = parcelHelpers.interopDefault(_config);
+var _colorKeys = require("./consts/ColorKeys");
+var _colorKeysDefault = parcelHelpers.interopDefault(_colorKeys);
+class Button extends Phaser.GameObjects.Container {
+    constructor(scene, x, y, width, heigth, textOrImage, callbackFunction, designSystemSettings, hoverSettings){
+        //roundRadius: number = 5, backgroundColor: number =  0xeeeeee, strokeColor : number = 0x000000) {
+        super(scene, x, y);
+        this.isButtonPressed = false;
+        this.isDeactivated = false;
+        this.showWarningWhenDeactivatedButtonIsPressed = true;
+        this.style = {
+            fontColor: (0, _colorKeysDefault.default).WHITE,
+            fontSize: "32px",
+            strokeColor: (0, _colorKeysDefault.default).WHITE_0X,
+            hoverColor: (0, _colorKeysDefault.default).GREY_VERY_DARK_0X,
+            backgroundColor: (0, _colorKeysDefault.default).GREY_LIGHT_0X,
+            backgroundColorDeactivated: (0, _colorKeysDefault.default).DARKGREY_0X,
+            shadowAlpha: 0.3,
+            shadowColor: (0, _colorKeysDefault.default).GREY_0X,
+            shadowSize: 5,
+            warningMessageColor: 0xf3b6b5,
+            roundRadius: 5,
+            fontFamily: (0, _configDefault.default).DEFAULT_FONT
+        };
+        this._modifyStyle(designSystemSettings);
+        // @ts-ignore
+        if (!scene.rexUI) throw new Error('Designsystem "Button" requires a scene with property "rexUI".');
+        // @ts-ignore
+        const rexUI = scene.rexUI;
+        // Add shadow
+        // this.shadow = rexUI.add.roundRectangle(- width / 2 + this.style.shadowSize, this.style.shadowSize, width, heigth,  this.style.roundRadius, this.style.shadowColor).setOrigin(0,0.5);
+        this.shadow = rexUI.add.roundRectangle(this.style.shadowSize, this.style.shadowSize, width, heigth, this.style.roundRadius, this.style.shadowColor).setOrigin(0.5, 0.5);
+        this.shadow.alpha = this.style.shadowAlpha;
+        this.add(this.shadow);
+        // Add background
+        this.background = rexUI.add.roundRectangle(0, 0, width, heigth, this.style.roundRadius, this.style.backgroundColor).setOrigin(0.5, 0.5);
+        this.background.setStrokeStyle(2, this.style.strokeColor);
+        this.add(this.background);
+        // Add label text
+        if (textOrImage instanceof Phaser.GameObjects.Image) {
+            this.image = textOrImage;
+            this.add(this.image);
+        } else if (typeof textOrImage === "string") {
+            this.text = scene.add.text(0, 0, textOrImage, {
+                color: this.style.fontColor,
+                fontSize: this.style.fontSize
+            }).setOrigin(0.5, 0.5);
+            this.text.setFontFamily(this.style.fontFamily);
+            this.add(this.text);
+        }
+        // Add hover message (don't show it yet)
+        if (hoverSettings) this._addHoverMessage(hoverSettings);
+        // Add button behavior
+        this._addButtonBehavior(callbackFunction, designSystemSettings);
+    }
+    getClickableBackground() {
+        return this.background;
+    }
+    getText() {
+        if (!this.text) throw new Error("Button has no text object when trying to get text of button. You probably have initialized button with image as label. You should not mix text and image as label.");
+        return this.text.text;
+    }
+    setText(text) {
+        if (!this.text) throw new Error("Button has no text object when trying to set text of button to new value. You probably have initialized button with image as label. You should not mix text and image as label.");
+        this.text.setText(text);
+    }
+    setImage(image) {
+        // Create clone of image.
+        // This is workaround to prevent to logical conflict when same instance of image is set twice as image of button and then throws error when deleted image is queried.
+        image = new Phaser.GameObjects.Image(this.scene, image.x, image.y, image.texture.key, image.frame.name);
+        if (!this.image) throw new Error("Button has no image object when trying to set image of button to new value. You probably have initialized button with text as label. You should not mix text and image as label.");
+        // Destroy previous image. Otherwise it will still be around in memory and visible
+        this.image.destroy();
+        this.add(image);
+        this.image = image;
+    }
+    setBackgroundColor(color) {
+        this.style.backgroundColor = color;
+        this.background.fillColor = color;
+    }
+    _modifyStyle(designSystemSettings) {
+        if (typeof (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.roundRadius) === "number") this.style.roundRadius = designSystemSettings.roundRadius;
+        if (typeof (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.strokeColor0x) === "number") this.style.strokeColor = designSystemSettings.strokeColor0x;
+        if (typeof (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.fillColor0x) === "number") this.style.backgroundColor = designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.fillColor0x;
+        if (typeof (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.fillColorDeactivated0x) === "number") this.style.backgroundColorDeactivated = designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.fillColorDeactivated0x;
+        if (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.fontColor) this.style.fontColor = designSystemSettings.fontColor;
+        if (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.fontFamily) this.style.fontFamily = designSystemSettings.fontFamily;
+        if (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.fontSize) this.style.fontSize = designSystemSettings.fontSize;
+        if (typeof (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.hoverColor0x) === "number") this.style.hoverColor = designSystemSettings.hoverColor0x;
+        if (typeof (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.shadowAlpha) === "number") this.style.shadowAlpha = designSystemSettings.shadowAlpha;
+        if (typeof (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.shadowColor0x) === "number") this.style.shadowColor = designSystemSettings.shadowColor0x;
+        if (typeof (designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.shadowSize) === "number") this.style.shadowSize = designSystemSettings.shadowSize;
+    }
+    _addButtonBehavior(callbackFunction, designSystemSettings) {
+        this.background.setInteractive({
+            useHandCursor: true
+        });
+        this.background.on("pointerdown", (pointer)=>{
+            this._animateButtonPressed();
+        }, this);
+        this.background.on("pointerup", (pointer)=>{
+            this._animateButtonReleased();
+            this._hideHoverMessage();
+            if (this.isDeactivated) {
+                if (this.showWarningWhenDeactivatedButtonIsPressed) (0, _popupInfoDefault.default).showBannerAnimation(this.scene, "Button is deactivated.", this.style.warningMessageColor, undefined, undefined, designSystemSettings === null || designSystemSettings === void 0 ? void 0 : designSystemSettings.fontFamily);
+                return;
+            }
+            callbackFunction();
+        }, this);
+        this.background.on("pointerover", (pointer)=>{
+            if (!this.isDeactivated) {
+                this.background.setFillStyle(this.style.hoverColor);
+                this._showHoverMessage();
+            }
+        }, this);
+        this.background.on("pointerout", (pointer)=>{
+            var _a;
+            this._animateButtonReleased();
+            if ((_a = this.background.input) === null || _a === void 0 ? void 0 : _a.enabled) {
+                this.background.setFillStyle(this.isDeactivated ? this.style.backgroundColorDeactivated : this.style.backgroundColor);
+                this._hideHoverMessage();
+            }
+        }, this);
+    }
+    _animateButtonPressed() {
+        if (!this.isButtonPressed) {
+            this.x += this.style.shadowSize; // Press whole container
+            this.y += this.style.shadowSize;
+            this.shadow.x -= this.style.shadowSize; // ... except shadow
+            this.shadow.y -= this.style.shadowSize;
+            this.isButtonPressed = true;
+        }
+    }
+    _animateButtonReleased() {
+        if (this.isButtonPressed) {
+            this.x -= this.style.shadowSize; // Release whole container
+            this.y -= this.style.shadowSize;
+            this.shadow.x += this.style.shadowSize; // ... except shadow
+            this.shadow.y += this.style.shadowSize;
+            this.isButtonPressed = false;
+        }
+    }
+    _addHoverMessage(hoverSettings) {
+        // 1) Create container for hover message. This is needed because we have at least two objects: text and background
+        const hoverContainer = this.scene.add.container(0, 0);
+        // 2) Create text for hover message
+        const text = this.scene.add.text(0, 0, "  " + hoverSettings.hoverMessage + "  ", {
+            color: this.style.fontColor
+        });
+        text.setFontFamily(this.style.fontFamily);
+        // 3) Create rectangle with border. Size is calculated based on text size.
+        const rectangleWidth = text.width;
+        const rectangle = this.scene.add.rectangle(0, 0, rectangleWidth, 30, this.style.backgroundColor);
+        rectangle.setStrokeStyle(2, this.style.strokeColor);
+        hoverContainer.add(rectangle);
+        // ... only now add text, otherwise it would be under the rectangle
+        hoverContainer.add(text);
+        // 4) Position container according to "hoverSettings".position
+        this.add(hoverContainer);
+        const distanceToButton = 30;
+        switch(hoverSettings.position){
+            case "left":
+                hoverContainer.x = -distanceToButton;
+                hoverContainer.y = 0;
+                rectangle.setOrigin(1, 0.5);
+                text.setOrigin(1, 0.5);
+                break;
+            case "right":
+                hoverContainer.x = distanceToButton;
+                hoverContainer.y = 0;
+                rectangle.setOrigin(0, 0.5);
+                text.setOrigin(0, 0.5);
+                break;
+            case "top":
+                hoverContainer.x = 0;
+                hoverContainer.y = -distanceToButton;
+                rectangle.setOrigin(0.5, 1);
+                text.setOrigin(0.5, 1);
+                break;
+            case "bottom":
+                hoverContainer.x = 0;
+                hoverContainer.y = distanceToButton;
+                rectangle.setOrigin(0.5, 0);
+                text.setOrigin(0.5, 0);
+                break;
+        }
+        hoverContainer.setVisible(false);
+        this.hoverContainer = hoverContainer;
+    }
+    _showHoverMessage() {
+        var _a;
+        (_a = this.hoverContainer) === null || _a === void 0 || _a.setVisible(true);
+    }
+    _hideHoverMessage() {
+        var _a;
+        (_a = this.hoverContainer) === null || _a === void 0 || _a.setVisible(false);
+    }
+    deactivate(showWarningWhenDeactivatedButtonIsPressed = true, newTextOrImage) {
+        this.showWarningWhenDeactivatedButtonIsPressed = showWarningWhenDeactivatedButtonIsPressed;
+        this.isDeactivated = true;
+        this.background.fillColor = this.style.backgroundColorDeactivated;
+        if (newTextOrImage) {
+            if (typeof newTextOrImage === "string") {
+                if (!this.text) throw new Error("Button has no text object, but you want to change the text on deactivation. You probably have init button with image as label. You should not mix text and image as label.");
+                this.text.setText(newTextOrImage);
+            } else {
+                if (!this.image) throw new Error("Button has no image object, but you want to change the image on deactivation. You probably have initialized button with text as label. You should not mix text and image as label.");
+                this.setImage(newTextOrImage);
+            }
+        }
+    }
+    activate(newTextOrImage) {
+        this.isDeactivated = false;
+        this.background.fillColor = this.style.backgroundColor;
+        if (newTextOrImage) {
+            if (typeof newTextOrImage === "string") {
+                if (!this.text) throw new Error("Button has no text object, but you want to change the text on activation. You probably have initialized button with image as label. You should not mix text and image as label.");
+                this.text.setText(newTextOrImage);
+            } else {
+                if (!this.image) throw new Error("Button has no image object, but you want to change the image on activation. You probably have initialized button with text as label. You should not mix text and image as label.");
+                this.setImage(newTextOrImage);
+            }
+        }
+    }
+}
+exports.default = Button;
+
+},{"./PopupInfo":"02g5Q","./Config":"eq8Ft","./consts/ColorKeys":"9lnJX","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"02g5Q":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _tweens = require("./Tweens");
+var _tweensDefault = parcelHelpers.interopDefault(_tweens);
+var _config = require("./Config");
+var _configDefault = parcelHelpers.interopDefault(_config);
+var _imageKeys = require("./consts/ImageKeys");
+var _imageKeysDefault = parcelHelpers.interopDefault(_imageKeys);
+var PopupInfo = /** @class */ function() {
+    function PopupInfo() {}
+    PopupInfo.showBannerAnimation = function(scene, text, color, duration, y, fontFamily) {
+        var _this = this;
+        if (color === void 0) color = this.defaultColor;
+        if (duration === void 0) duration = undefined;
+        if (y === void 0) y = this.Y;
+        if (duration !== undefined) this.DURATION = duration;
+        // Animation of grey flying-in box
+        var eases = [
+            "Quad.easeOut",
+            "Cubic.easeOut",
+            "Quart.easeOut",
+            "Quint.easeOut",
+            "Sine.easeOut",
+            "Expo.easeOut",
+            "Circ.easeOut",
+            "Back.easeOut",
+            "Quad.easeIn",
+            "Cubic.easeIn",
+            "Quart.easeIn",
+            "Quint.easeIn",
+            "Sine.easeIn",
+            "Expo.easeIn",
+            "Circ.easeIn",
+            "Back.easeIn",
+            "Bounce.easeIn"
+        ];
+        //@ts-ignore
+        var images = scene.add.group({
+            key: (0, _imageKeysDefault.default).BAR,
+            repeat: 9,
+            setXY: {
+                x: -200,
+                y: y,
+                stepY: 5
+            },
+            alpha: 0.5
+        });
+        images.children.iterate(function(child) {
+            // Move in from left
+            // @ts-ignore
+            child.setTint(color);
+            scene.tweens.add({
+                targets: child,
+                x: scene.sys.canvas.width / 2,
+                ease: eases.shift(),
+                duration: _this.DURATION - 500,
+                delay: 0
+            });
+            // Move out to right
+            scene.tweens.add({
+                targets: child,
+                x: scene.sys.canvas.width + 300,
+                ease: eases.shift(),
+                duration: _this.DURATION,
+                delay: _this.DURATION + 150,
+                onComplete: function() {
+                    images.destroy();
+                }
+            });
+            return true;
+        });
+        // Display text message
+        var fontFamilyToUse = fontFamily || (0, _configDefault.default).DEFAULT_FONT;
+        var textObject = scene.add.text(scene.sys.canvas.width / 2, this.Y + 20, text, {
+            font: "23px " + fontFamilyToUse
+        });
+        textObject.setFill(this.textColor);
+        textObject.setAlpha(0);
+        textObject.setOrigin(0.5, 0.5);
+        // Text Fade In
+        (0, _tweensDefault.default).fadeIn(textObject, this.DURATION - 300);
+        // Text Fade Out
+        scene.tweens.add({
+            targets: textObject,
+            alpha: 0,
+            delay: this.DURATION + 150,
+            duration: this.DURATION,
+            ease: "Power2",
+            onComplete: function() {
+                textObject.destroy();
+                images.destroy();
+            }
+        });
+        // Set depths
+        images.setDepth(100);
+        textObject.setDepth(101);
+    };
+    PopupInfo.Y = 80;
+    PopupInfo.DURATION = 1500;
+    PopupInfo.defaultColor = 0xeeeeee; // grey
+    PopupInfo.successColor = 0x00ff00; // green
+    PopupInfo.textColor = "#000000"; // black
+    return PopupInfo;
+}();
+exports.default = PopupInfo;
+
+},{"./Tweens":"1810Z","./Config":"eq8Ft","./consts/ImageKeys":"iaGUp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1810Z":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var Tweens = /** @class */ function() {
+    function Tweens() {}
+    Tweens.fadeIn = function(gameObject, delay, duration) {
+        if (delay === void 0) delay = 0;
+        if (duration === void 0) duration = 1000;
+        gameObject.scene.tweens.add({
+            targets: gameObject,
+            alpha: 1,
+            duration: duration,
+            delay: delay,
+            ease: "Power2"
+        });
+    };
+    Tweens.fadeOut = function(gameObject, callbackFunction, delay, duration) {
+        if (callbackFunction === void 0) callbackFunction = function() {};
+        if (delay === void 0) delay = 0;
+        if (duration === void 0) duration = 1000;
+        gameObject.scene.tweens.add({
+            targets: gameObject,
+            alpha: 0,
+            duration: duration,
+            delay: 0,
+            ease: "Power2",
+            onComplete: callbackFunction
+        });
+    };
+    Tweens.scaleDown = function(gameObject, callbackFunction, delay, duration) {
+        if (callbackFunction === void 0) callbackFunction = function() {};
+        if (delay === void 0) delay = 0;
+        if (duration === void 0) duration = 1000;
+        gameObject.scene.tweens.add({
+            targets: gameObject,
+            scale: 0,
+            duration: duration,
+            delay: 0,
+            ease: "Power2",
+            onComplete: callbackFunction
+        });
+    };
+    return Tweens;
+}();
+exports.default = Tweens;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eq8Ft":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var Config = /** @class */ function() {
+    function Config() {}
+    Config.DEFAULT_FONT = "Arial";
+    return Config;
+}();
+exports.default = Config;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"iaGUp":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+exports.default = {
+    BAR: "bar"
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bJ3vN":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class ColorKeys {
+}
+exports.default = ColorKeys;
+ColorKeys.WHITE = "#ffffff";
+ColorKeys.WHITE_0X = 0xffffff;
+ColorKeys.DARKGREEN = "#539943";
+ColorKeys.DARKGREEN_0x = 0x539943;
+ColorKeys.MINTGREEN = "#d7f7ec";
+ColorKeys.MINTGREEN_0X = 0xd7f7ec;
+ColorKeys.MINTGREEN_DARK_0X = 0xa4d6c4;
+ColorKeys.GREEN = "#00FF00";
+ColorKeys.GREEN_0X = 0x00FF00;
+ColorKeys.GREEN_LIGHT = "#90d690";
+ColorKeys.GREEN_LIGHT_0X = 0x90d690;
+ColorKeys.GREY_0X = 0xdddddd;
+ColorKeys.GREY_LIGHT_0X = 0xeeeeee;
+ColorKeys.GREY_VERY_LIGHT = "#F8F8F8FF";
+ColorKeys.GREY_VERY_LIGHT_0X = 0xF8F8F8;
+ColorKeys.DARKGREY = "#aaaaaa";
+ColorKeys.DARKGREY_0X = 0xaaaaaa;
+ColorKeys.GREY_VERY_DARK = "#555555";
+ColorKeys.GREY_VERY_DARK_0X = 0x555555;
+ColorKeys.BLACK_0x = 0x000000;
+ColorKeys.BLACK = "#000000";
+ColorKeys.RED = "#FF0000";
+ColorKeys.RED_DARK = "#971111";
+ColorKeys.RED_DARK_0x = 0x971111;
+ColorKeys.RED_MILD = "#db4c4c";
+ColorKeys.RED_MILD_0x = 0xdb4c4c;
+ColorKeys.RED_0X = 0xFF0000;
+ColorKeys.RED_LIGHT = "#f3b6b5";
+ColorKeys.RED_LIGHT_0x = 0xf3b6b5;
+ColorKeys.WARNING = "#ff8c00"; // orange
+ColorKeys.WARNING_0X = 0xff8c00;
+ColorKeys.BLUE_LIGHT_STRONG = "#00FFFF";
+ColorKeys.BLUE_LIGHT = "#a3d5ed";
+ColorKeys.BLUE_LIGHT_0x = 0xa3d5ed;
+ColorKeys.BLUE_VERY_LIGHT = "#d9edfa";
+ColorKeys.BLUE_VERY_LIGHT_0x = 0xD9EDFA;
+ColorKeys.BLUE_JEANS = "#6fa3ba";
+ColorKeys.BLUE_JEANS_0x = 0x6fa3ba;
+ColorKeys.BLUE_DARK = "#30487c";
+ColorKeys.BLUE_DARK_0X = 0x30487c;
+ColorKeys.BLUE_KUBERNETES = "#316CE5";
+ColorKeys.BLUE_KUBERNETES_0X = 0x316CE5;
+ColorKeys.YELLOW_0X = 0xffd83d;
+ColorKeys.YELLOW_DARK = "#E0C30E";
+ColorKeys.YELLOW_DARK_0x = 0xE0C30E;
+ColorKeys.CREAM_LIGHT = "#f4efd9";
+ColorKeys.CREAM_LIGHT_0X = 0xf4efd9;
+ColorKeys.CREAM_MEDIUM = "#d6cca4";
+ColorKeys.CREAM_MEDIUM_0x = 0xd6cca4;
+ColorKeys.CREAM_DARK = "#cbb189";
+ColorKeys.CREAM_DARK_0x = 0xcbb189;
+ColorKeys.BACKGROUND_0x = ColorKeys.CREAM_LIGHT_0X;
+ColorKeys.LOOSE_TEXT = ColorKeys.BLACK;
+ColorKeys.PRIMARY_LIGHT = ColorKeys.GREY_0X;
+ColorKeys.PRIMARY_LIGHT_0X = ColorKeys.GREY_0X;
+ColorKeys.PRIMARY_DARK = ColorKeys.DARKGREY;
+ColorKeys.PRIMARY_DARK_0X = ColorKeys.DARKGREY_0X;
+ColorKeys.PURPLE = "#DFC4E2";
+ColorKeys.PURPLE_0X = 0xDFC4E2;
+ColorKeys.PURPLE_DARK = "#B48CB7";
+ColorKeys.PURPLE_DARK_0X = 0xB48CB7;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"i2nBT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _config = require("~/game/Config");
