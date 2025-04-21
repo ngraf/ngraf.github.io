@@ -239044,6 +239044,7 @@ Config.INPUT_FIELD_Y = 400;
 Config.INPUT_FIELD_FONT_SIZE = "42px";
 Config.INPUT_FIELD_FONT_COLOR = (0, _colorKeysDefault.default).WHITE;
 Config.INPUT_FIELD_FONT_COLOR_INCORRECT = (0, _colorKeysDefault.default).RED_MILD;
+// 🗨️ Speech Bubble
 Config.SPEECH_BUBBLE_HEIGHT = 70;
 // 🎲 Game
 Config.AI_PROMPT_VALIDATE_ANSWER = "Du bist ein Spielleiter einer Partie Stadt Land Fluss. Die Kategorie lautet: {{category}}. Der Spieler hat die Antwort {{answer}} gegeben. Ist die Antwort korrekt? Antworte mit ja oder nein.";
@@ -239673,7 +239674,7 @@ class GameMasterFace {
             fontSize: "32px",
             color: (0, _colorKeysDefault.default).BLACK
         }).setOrigin(0, 0);
-        this.message.setWordWrapWidth(this.mainScene.sys.canvas.width - (0, _configDefault.default).GAME_MASTER_MESSAGE_X, true);
+        this.message.setWordWrapWidth(this.mainScene.sys.canvas.width - (0, _configDefault.default).GAME_MASTER_MESSAGE_X - 50, true);
         // Set the alpha to 0 of message and speech bubble so it is invisible at the beginning
         this.message.setAlpha(0);
         this.speechBubble.setAlpha(0);
@@ -239730,8 +239731,11 @@ class GameMasterFace {
         });
     }
     _redrawSpeechBubble(graphicsObject, message, color, offsetX, offsetY) {
-        const speechBubbleMinWidth = 50; // Minimum width of the speech bubble
-        const speechBubbleWidth = speechBubbleMinWidth + message.text.length * 19; // 19px per character is a good amount
+        const speechBubbleMinWidth = 50;
+        const pixelPerCharacter = 19; // 19px per character is a good amount
+        const speechBubbleMaxWidth = this.mainScene.sys.canvas.width - 200;
+        const speechBubbleExtraWidth = message.text.length * pixelPerCharacter < speechBubbleMaxWidth ? message.text.length * pixelPerCharacter : speechBubbleMaxWidth;
+        const speechBubbleWidth = speechBubbleMinWidth + speechBubbleExtraWidth;
         const speechBubbleExtraHeight = message.height > 50 ? message.height : 0;
         graphicsObject.clear();
         graphicsObject.fillStyle(color, 1);
