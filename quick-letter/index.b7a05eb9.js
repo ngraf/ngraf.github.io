@@ -238764,7 +238764,7 @@ class GameMaster {
      * @private
      */ _handleCorrectAnswer(answer) {
         // Set game master face to happy
-        this.gameMasterFace.say("✅", "\uD83D\uDE03");
+        this.gameMasterFace.say(`✅ ${answer}`, "\uD83D\uDE03");
         // Remove letter from hand
         const hand = this.mainScene.getHand();
         hand.removeLetter(answer.charAt(0).toUpperCase());
@@ -238781,7 +238781,7 @@ class GameMaster {
      * @private
      */ _handleIncorrectAnswer(answer) {
         // Set game master face to unhappy
-        this.gameMasterFace.say("❌", "☹️");
+        this.gameMasterFace.say(`❌ ${answer}`, "☹️");
         // Unmark letter in hand
         const hand = this.mainScene.getHand();
         hand.unmarkLetter();
@@ -239003,7 +239003,7 @@ Config.INPUT_FIELD_X = 50;
 Config.INPUT_FIELD_Y = 400;
 Config.INPUT_FIELD_FONT_SIZE = "42px";
 Config.INPUT_FIELD_FONT_COLOR = (0, _colorKeysDefault.default).WHITE;
-Config.INPUT_FIELD_FONT_COLOR_INCORRECT = (0, _colorKeysDefault.default).RED;
+Config.INPUT_FIELD_FONT_COLOR_INCORRECT = (0, _colorKeysDefault.default).RED_MILD;
 Config.SPEECH_BUBBLE_HEIGHT = 70;
 // 🎲 Game
 Config.AI_PROMPT_VALIDATE_ANSWER = "Du bist ein Spielleiter einer Partie Stadt Land Fluss. Die Kategorie lautet: {{category}}. Der Spieler hat die Antwort {{answer}} gegeben. Ist die Antwort korrekt? Antworte mit ja oder nein.";
@@ -239828,24 +239828,18 @@ class InputField {
      * Every time a character is pressed, add it to the text.
      * @private
      */ _initKeyboardListener() {
-        const listenerFunction = (event)=>{
-            // Check if the key is a letter or a german umlaut
-            if (event.key.length === 1 && event.key.match(/^[a-zA-ZäöüÄÖÜß]$/)) {
-                // Check if the last letter is a "_". If yes, remove it.
-                if (this.text.text.endsWith(this.blinkChar)) this.text.setText(this.text.text.slice(0, -1));
-                this.text.setText(this.text.text + event.key);
-                this._reactToInputChange();
-            } else if (event.key === "Backspace") {
-                // Check if the last letter is a "_". If yes, remove it.
-                if (this.text.text.endsWith(this.blinkChar)) this.text.setText(this.text.text.slice(0, -1));
-                this.text.setText(this.text.text.slice(0, -1));
-                this._reactToInputChange();
-            } else if (event.key === "Enter" && this.text.text.length > 0 && this.mainScene.getHand().hasLetter(this.text.text.charAt(0).toUpperCase())) this._handleEnter();
+        const keyDownListener = (event)=>{
+            if (event.key === "Enter" && this.text.text.length > 0 && this.mainScene.getHand().hasLetter(this.text.text.charAt(0).toUpperCase())) this._handleEnter();
+        };
+        const inputListener = (event)=>{
+            this.text.setText(this.hiddenInputElement.value);
+            this._reactToInputChange();
         };
         // For mobile devices, we need to listen to the input from a hidden input field
         this.hiddenInputElement = document.getElementById("hiddenInput");
         if (!this.hiddenInputElement) throw new Error("Hidden input element with id 'hiddenInput' not found in the DOM");
-        this.hiddenInputElement.addEventListener("keydown", listenerFunction);
+        this.hiddenInputElement.addEventListener("input", inputListener); // needed for text input
+        this.hiddenInputElement.addEventListener("keydown", keyDownListener); // needed for enter key
         // Workaround: In case we click away from canvas, we need to focus the hidden input element again
         // If user clicks on the canvas, focus the hidden input element
         this.mainScene.input.on("pointerdown", ()=>{
@@ -239895,7 +239889,7 @@ class End extends Phaser.Scene {
             color: "#fff"
         });
         // Show restart button
-        const restartButton = this.add.text(100, 150, "Click me to Restart", {
+        const restartButton = this.add.text(100, 150, "Click here to Restart", {
             fontSize: "32px",
             color: "#fff"
         }).setInteractive().on("pointerup", ()=>{
