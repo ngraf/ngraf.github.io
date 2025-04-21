@@ -238677,8 +238677,6 @@ var _gameMaster = require("~/game/GameMaster");
 var _gameMasterDefault = parcelHelpers.interopDefault(_gameMaster);
 var _hand = require("~/game/Hand");
 var _handDefault = parcelHelpers.interopDefault(_hand);
-var _inputField = require("~/game/InputField");
-var _inputFieldDefault = parcelHelpers.interopDefault(_inputField);
 class MainScene extends Phaser.Scene {
     constructor(){
         super((0, _sceneKeysDefault.default).GAME);
@@ -238690,8 +238688,6 @@ class MainScene extends Phaser.Scene {
         // Create game master
         this.gameMaster = new (0, _gameMasterDefault.default)(this);
         this.gameMaster.startGame();
-        // Create input
-        this.inputField = new (0, _inputFieldDefault.default)(this);
     }
     update(time, delta) {}
     getHand() {
@@ -238703,7 +238699,7 @@ class MainScene extends Phaser.Scene {
 }
 exports.default = MainScene;
 
-},{"~/consts/SceneKeys":"8GRkC","~/game/GameMaster":"1DVKL","~/game/Hand":"i2nBT","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","~/game/InputField":"fQ3oK"}],"1DVKL":[function(require,module,exports) {
+},{"~/consts/SceneKeys":"8GRkC","~/game/GameMaster":"1DVKL","~/game/Hand":"i2nBT","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1DVKL":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _tslib = require("tslib");
@@ -238715,6 +238711,8 @@ var _sceneKeys = require("~/consts/SceneKeys");
 var _sceneKeysDefault = parcelHelpers.interopDefault(_sceneKeys);
 var _gameMasterFace = require("~/game/GameMasterFace");
 var _gameMasterFaceDefault = parcelHelpers.interopDefault(_gameMasterFace);
+var _inputHandler = require("~/game/InputHandler");
+var _inputHandlerDefault = parcelHelpers.interopDefault(_inputHandler);
 class GameMaster {
     constructor(mainScene){
         this.currentCategory = "";
@@ -238722,9 +238720,20 @@ class GameMaster {
         this.mainScene = mainScene;
         this.gameMasterFace = new (0, _gameMasterFaceDefault.default)(mainScene);
     }
-    startGame() {
-        this._dealLettersToPlayer();
-        this._nameNewCategory();
+    startGame(showIntro = true) {
+        const startGame = ()=>{
+            this._dealLettersToPlayer();
+            this._nameNewCategory();
+            // Create input
+            new (0, _inputHandlerDefault.default)(this.mainScene);
+        };
+        if (showIntro) {
+            // Set game master face to happy
+            this.gameMasterFace.say((0, _configDefault.default).INTRO_TEXT, "\uD83D\uDE42");
+            this.mainScene.input.once("pointerdown", ()=>{
+                startGame();
+            });
+        } else startGame();
     }
     endGame() {
         // Start "End" scene
@@ -238972,7 +238981,7 @@ class GameMaster {
 }
 exports.default = GameMaster;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","~/game/Config":"8FUdF","tslib":"lRdW5","~/game/AiProxy":"jfej0","~/consts/SceneKeys":"8GRkC","~/game/GameMasterFace":"BadaM"}],"8FUdF":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","~/game/Config":"8FUdF","tslib":"lRdW5","~/game/AiProxy":"jfej0","~/consts/SceneKeys":"8GRkC","~/game/GameMasterFace":"BadaM","~/game/InputHandler":"aY7Y5"}],"8FUdF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorKeys = require("../../../../library/designsystem/consts/ColorKeys");
@@ -238988,7 +238997,7 @@ Config.AI_MODEL = "gemini-2.0-flash-001";
 Config.GAME_MASTER_FACE_X = 60;
 Config.GAME_MASTER_FACE_Y = 70;
 Config.GAME_MASTER_MESSAGE_X = 130;
-Config.GAME_MASTER_MESSAGE_Y = 70;
+Config.GAME_MASTER_MESSAGE_Y = 52;
 // Hand full of cards
 Config.HAND_X_POSITION = 20;
 Config.HAND_Y_POSITION = 160;
@@ -238999,7 +239008,7 @@ Config.LETTER_CARD_WIDTH = 100;
 Config.LETTER_CARD_HEIGHT = 150;
 Config.LETTER_CARD_RADIUS = 20;
 // 🖊️ Input Field
-Config.INPUT_FIELD_X = 50;
+Config.INPUT_FIELD_X = 20;
 Config.INPUT_FIELD_Y = 400;
 Config.INPUT_FIELD_FONT_SIZE = "42px";
 Config.INPUT_FIELD_FONT_COLOR = (0, _colorKeysDefault.default).WHITE;
@@ -239020,6 +239029,19 @@ Config.CATEGORIES = [
 Config.START_LETTER_COUNT = 6;
 Config.MAXIMUM_LETTER_COUNT = 7;
 Config.GAME_MASTER_REACTION_DURATION = 1500;
+Config.INTRO_TEXT = `Hi, Lust eine Runde "Quick Letter" zu spielen?
+  
+  So geht's:
+  - Du erhälst 6 zufällige Buchstaben von mir.
+  - Ich werde dir zufällige Kategorien nennen.
+  - Du musst mir ein für die Kategorie passendes Wort nennen, das mit einem deiner Buchstaben anfängt.
+  - Dann drücke Enter.
+  - Wenn mir die Antwort gefällt, nehme ich dir Buchstaben ab.
+  - Wenn mir die Antwort nicht gefällt, bekommst du einen Strafbuchstaben.
+  - Du hast gewonnen, wenn du alle Buchstaben los bist.
+  
+  Klicke um zu beginnen!
+  `;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../../../library/designsystem/consts/ColorKeys":"9lnJX"}],"9lnJX":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -239559,7 +239581,8 @@ class GameMasterFace {
         this.message = this.mainScene.add.text((0, _configDefault.default).GAME_MASTER_MESSAGE_X, (0, _configDefault.default).GAME_MASTER_MESSAGE_Y, "", {
             fontSize: "32px",
             color: (0, _colorKeysDefault.default).BLACK
-        }).setOrigin(0, 0.5);
+        }).setOrigin(0, 0);
+        this.message.setWordWrapWidth(this.mainScene.sys.canvas.width - (0, _configDefault.default).GAME_MASTER_MESSAGE_X, true);
         // Set the alpha to 0 of message and speech bubble so it is invisible at the beginning
         this.message.setAlpha(0);
         this.speechBubble.setAlpha(0);
@@ -239569,8 +239592,8 @@ class GameMasterFace {
         this.face.setText(emoji);
         this.message.setText(message);
         // Update speech bubble
-        this._redrawSpeechBubble(this.speechBubble, message, (0, _colorKeysDefault.default).GREY_VERY_LIGHT_0X, 0, 0);
-        this._redrawSpeechBubble(this.speechBubbleShadow, message, (0, _colorKeysDefault.default).DARKGREY_0X, 3, 3);
+        this._redrawSpeechBubble(this.speechBubble, this.message, (0, _colorKeysDefault.default).GREY_VERY_LIGHT_0X, 0, 0);
+        this._redrawSpeechBubble(this.speechBubbleShadow, this.message, (0, _colorKeysDefault.default).DARKGREY_0X, 3, 3);
         // Fade in the speech bubble and the message
         this.mainScene.tweens.add({
             targets: [
@@ -239617,16 +239640,20 @@ class GameMasterFace {
     }
     _redrawSpeechBubble(graphicsObject, message, color, offsetX, offsetY) {
         const speechBubbleMinWidth = 50; // Minimum width of the speech bubble
-        const speechBubbleWidth = speechBubbleMinWidth + message.length * 19; // 19px per character is a good amount
+        const speechBubbleWidth = speechBubbleMinWidth + message.text.length * 19; // 19px per character is a good amount
+        const speechBubbleExtraHeight = message.height > 50 ? message.height : 0;
         graphicsObject.clear();
         graphicsObject.fillStyle(color, 1);
         graphicsObject.beginPath();
         graphicsObject.moveTo((0, _configDefault.default).GAME_MASTER_FACE_X + 40 + offsetX, (0, _configDefault.default).GAME_MASTER_FACE_Y + offsetY);
         graphicsObject.lineTo((0, _configDefault.default).GAME_MASTER_MESSAGE_X - 20 + offsetX, (0, _configDefault.default).GAME_MASTER_FACE_Y - 10 + offsetY);
         graphicsObject.lineTo((0, _configDefault.default).GAME_MASTER_MESSAGE_X - 20 + offsetX, (0, _configDefault.default).GAME_MASTER_FACE_Y - (0, _configDefault.default).SPEECH_BUBBLE_HEIGHT / 2 + offsetY);
+        // top-right
         graphicsObject.lineTo((0, _configDefault.default).GAME_MASTER_MESSAGE_X - 20 + speechBubbleWidth + offsetX, (0, _configDefault.default).GAME_MASTER_FACE_Y - (0, _configDefault.default).SPEECH_BUBBLE_HEIGHT / 2 + offsetY);
-        graphicsObject.lineTo((0, _configDefault.default).GAME_MASTER_MESSAGE_X - 20 + speechBubbleWidth + offsetX, (0, _configDefault.default).GAME_MASTER_FACE_Y + (0, _configDefault.default).SPEECH_BUBBLE_HEIGHT / 2 + offsetY);
-        graphicsObject.lineTo((0, _configDefault.default).GAME_MASTER_MESSAGE_X - 20 + offsetX, (0, _configDefault.default).GAME_MASTER_FACE_Y + (0, _configDefault.default).SPEECH_BUBBLE_HEIGHT / 2 + offsetY);
+        // bottom-right
+        graphicsObject.lineTo((0, _configDefault.default).GAME_MASTER_MESSAGE_X - 20 + speechBubbleWidth + offsetX, (0, _configDefault.default).GAME_MASTER_FACE_Y + (0, _configDefault.default).SPEECH_BUBBLE_HEIGHT / 2 + speechBubbleExtraHeight + offsetY);
+        // bottom-left
+        graphicsObject.lineTo((0, _configDefault.default).GAME_MASTER_MESSAGE_X - 20 + offsetX, (0, _configDefault.default).GAME_MASTER_FACE_Y + (0, _configDefault.default).SPEECH_BUBBLE_HEIGHT / 2 + speechBubbleExtraHeight + offsetY);
         graphicsObject.lineTo((0, _configDefault.default).GAME_MASTER_MESSAGE_X - 20 + offsetX, (0, _configDefault.default).GAME_MASTER_FACE_Y + 10 + offsetY);
         graphicsObject.lineTo((0, _configDefault.default).GAME_MASTER_FACE_X + 40 + offsetX, (0, _configDefault.default).GAME_MASTER_FACE_Y + offsetY);
         graphicsObject.closePath();
@@ -239635,7 +239662,97 @@ class GameMasterFace {
 }
 exports.default = GameMasterFace;
 
-},{"~/game/Config":"8FUdF","../../../../library/designsystem/consts/ColorKeys":"9lnJX","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"i2nBT":[function(require,module,exports) {
+},{"~/game/Config":"8FUdF","../../../../library/designsystem/consts/ColorKeys":"9lnJX","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"aY7Y5":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _tslib = require("tslib");
+var _config = require("~/game/Config");
+var _configDefault = parcelHelpers.interopDefault(_config);
+class InputHandler {
+    constructor(mainScene){
+        this.blinkOn = false;
+        this.blinkChar = "_";
+        this.mainScene = mainScene;
+        // Create text
+        this._createInputText();
+        // Init blinking effect
+        this._initBlinkingEffect();
+        // Init keyboard listener
+        this._initKeyboardListener();
+    }
+    _createInputText() {
+        this.inputText = this.mainScene.add.text((0, _configDefault.default).INPUT_FIELD_X, (0, _configDefault.default).INPUT_FIELD_Y, "", {
+            fontSize: (0, _configDefault.default).INPUT_FIELD_FONT_SIZE,
+            color: (0, _configDefault.default).INPUT_FIELD_FONT_COLOR
+        });
+        // Make the text wrap when it reaches the width of the canvas - 20px
+        // this.text.setWordWrapWidth(this.mainScene.scale.width - 20);
+        this.inputText.setWordWrapWidth(this.mainScene.scale.width - (0, _configDefault.default).INPUT_FIELD_X - 20, true);
+    }
+    _initBlinkingEffect() {
+        // Every 500ms toggle the blinkOn property. If true, add "_" to the text, if false remove it.
+        this.mainScene.time.addEvent({
+            delay: 500,
+            callback: ()=>{
+                this.blinkOn = !this.blinkOn;
+                if (this.blinkOn) this.inputText.setText(this.inputText.text + this.blinkChar);
+                else // Remove the last character if it is a "_"
+                if (this.inputText.text.endsWith(this.blinkChar)) this.inputText.setText(this.inputText.text.slice(0, -1));
+            },
+            loop: true
+        });
+    }
+    /**
+     * Initialize keyboard listener.
+     * Every time a character is pressed, add it to the text.
+     * @private
+     */ _initKeyboardListener() {
+        const keyDownListener = (event)=>{
+            if (event.key === "Enter" && this.inputText.text.length > 0 && this.mainScene.getHand().hasLetter(this.inputText.text.charAt(0).toUpperCase())) this._handleEnter();
+        };
+        const inputListener = (event)=>{
+            this.inputText.setText(this.hiddenInputElement.value);
+            this._reactToInputChange();
+        };
+        // For mobile devices, we need to listen to the input from a hidden input field
+        this.hiddenInputElement = document.getElementById("hiddenInput");
+        if (!this.hiddenInputElement) throw new Error("Hidden input element with id 'hiddenInput' not found in the DOM");
+        this.hiddenInputElement.addEventListener("input", inputListener); // needed for text input
+        this.hiddenInputElement.addEventListener("keydown", keyDownListener); // needed for enter key
+        // Workaround: In case we click away from canvas, we need to focus the hidden input element again
+        // If user clicks on the canvas, focus the hidden input element
+        this.mainScene.input.on("pointerdown", ()=>{
+            this.hiddenInputElement.focus();
+        });
+        // Autofocus the hidden input element when the scene is created
+        this.hiddenInputElement.focus();
+    }
+    _reactToInputChange() {
+        const hand = this.mainScene.getHand();
+        const startingLetterOfInput = this.inputText.text.charAt(0).toUpperCase();
+        const letterIsInHand = hand.hasLetter(startingLetterOfInput);
+        // Check if the new text starts with a letter that is not in the hand, color the text red, otherwise white
+        const textColor = this.inputText.text === "" || letterIsInHand ? (0, _configDefault.default).INPUT_FIELD_FONT_COLOR : (0, _configDefault.default).INPUT_FIELD_FONT_COLOR_INCORRECT;
+        this.inputText.setColor(textColor);
+        if (letterIsInHand) hand.markLetter(startingLetterOfInput);
+        // If input text is empty, or letter is not in hand unmark letter
+        if (this.inputText.text === "" || !letterIsInHand) hand.unmarkLetter();
+    }
+    /**
+     * Handle enter key pressed
+     * @private
+     */ _handleEnter() {
+        return (0, _tslib.__awaiter)(this, void 0, void 0, function*() {
+            const answer = this.inputText.text.replace(/_/g, ""); // Remove the blinking cursor
+            this.inputText.setText(""); // Clear the text
+            this.hiddenInputElement.value = "";
+            yield this.mainScene.getGameMaster().validateAnswer(answer);
+        });
+    }
+}
+exports.default = InputHandler;
+
+},{"tslib":"lRdW5","~/game/Config":"8FUdF","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"i2nBT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _config = require("~/game/Config");
@@ -239786,94 +239903,7 @@ class LetterCard extends Phaser.GameObjects.Container {
 }
 exports.default = LetterCard;
 
-},{"~/game/Config":"8FUdF","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../../../library/designsystem/consts/ColorKeys":"9lnJX"}],"fQ3oK":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _tslib = require("tslib");
-var _config = require("~/game/Config");
-var _configDefault = parcelHelpers.interopDefault(_config);
-class InputField {
-    constructor(mainScene){
-        this.blinkOn = false;
-        this.blinkChar = "_";
-        this.mainScene = mainScene;
-        // Create text
-        this._createText();
-        // Init blinking effect
-        this._initBlinkingEffect();
-        // Init keyboard listener
-        this._initKeyboardListener();
-    }
-    _createText() {
-        this.text = this.mainScene.add.text((0, _configDefault.default).INPUT_FIELD_X, (0, _configDefault.default).INPUT_FIELD_Y, "", {
-            fontSize: (0, _configDefault.default).INPUT_FIELD_FONT_SIZE,
-            color: (0, _configDefault.default).INPUT_FIELD_FONT_COLOR
-        });
-    }
-    _initBlinkingEffect() {
-        // Every 500ms toggle the blinkOn property. If true, add "_" to the text, if false remove it.
-        this.mainScene.time.addEvent({
-            delay: 500,
-            callback: ()=>{
-                this.blinkOn = !this.blinkOn;
-                if (this.blinkOn) this.text.setText(this.text.text + this.blinkChar);
-                else // Remove the last character if it is a "_"
-                if (this.text.text.endsWith(this.blinkChar)) this.text.setText(this.text.text.slice(0, -1));
-            },
-            loop: true
-        });
-    }
-    /**
-     * Initialize keyboard listener.
-     * Every time a character is pressed, add it to the text.
-     * @private
-     */ _initKeyboardListener() {
-        const keyDownListener = (event)=>{
-            if (event.key === "Enter" && this.text.text.length > 0 && this.mainScene.getHand().hasLetter(this.text.text.charAt(0).toUpperCase())) this._handleEnter();
-        };
-        const inputListener = (event)=>{
-            this.text.setText(this.hiddenInputElement.value);
-            this._reactToInputChange();
-        };
-        // For mobile devices, we need to listen to the input from a hidden input field
-        this.hiddenInputElement = document.getElementById("hiddenInput");
-        if (!this.hiddenInputElement) throw new Error("Hidden input element with id 'hiddenInput' not found in the DOM");
-        this.hiddenInputElement.addEventListener("input", inputListener); // needed for text input
-        this.hiddenInputElement.addEventListener("keydown", keyDownListener); // needed for enter key
-        // Workaround: In case we click away from canvas, we need to focus the hidden input element again
-        // If user clicks on the canvas, focus the hidden input element
-        this.mainScene.input.on("pointerdown", ()=>{
-            this.hiddenInputElement.focus();
-        });
-        // Autofocus the hidden input element when the scene is created
-        this.hiddenInputElement.focus();
-    }
-    _reactToInputChange() {
-        const hand = this.mainScene.getHand();
-        const startingLetterOfInput = this.text.text.charAt(0).toUpperCase();
-        const letterIsInHand = hand.hasLetter(startingLetterOfInput);
-        // Check if the new text starts with a letter that is not in the hand, color the text red, otherwise white
-        const textColor = this.text.text === "" || letterIsInHand ? (0, _configDefault.default).INPUT_FIELD_FONT_COLOR : (0, _configDefault.default).INPUT_FIELD_FONT_COLOR_INCORRECT;
-        this.text.setColor(textColor);
-        if (letterIsInHand) hand.markLetter(startingLetterOfInput);
-        // If input text is empty, or letter is not in hand unmark letter
-        if (this.text.text === "" || !letterIsInHand) hand.unmarkLetter();
-    }
-    /**
-     * Handle enter key pressed
-     * @private
-     */ _handleEnter() {
-        return (0, _tslib.__awaiter)(this, void 0, void 0, function*() {
-            const answer = this.text.text.replace(/_/g, ""); // Remove the blinking cursor
-            this.text.setText(""); // Clear the text
-            this.hiddenInputElement.value = "";
-            yield this.mainScene.getGameMaster().validateAnswer(answer);
-        });
-    }
-}
-exports.default = InputField;
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","~/game/Config":"8FUdF","tslib":"lRdW5"}],"gpPKb":[function(require,module,exports) {
+},{"~/game/Config":"8FUdF","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../../../library/designsystem/consts/ColorKeys":"9lnJX"}],"gpPKb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _sceneKeys = require("~/consts/SceneKeys");
