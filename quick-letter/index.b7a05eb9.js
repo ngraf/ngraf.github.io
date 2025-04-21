@@ -238772,7 +238772,7 @@ class GameMaster {
         const hand = this.mainScene.getHand();
         hand.removeLetter(answer.charAt(0).toUpperCase());
         // Check if there are letters left in hand. If not, end game
-        if (hand.letters.length === 0) this.endGame();
+        if (hand.getLetters().length === 0) this.endGame();
         // Name new category with a delay of 1 second
         this.mainScene.time.delayedCall((0, _configDefault.default).GAME_MASTER_REACTION_DURATION, ()=>{
             this._nameNewCategory();
@@ -238785,10 +238785,14 @@ class GameMaster {
      */ _handleIncorrectAnswer(answer) {
         // Set game master face to unhappy
         this.gameMasterFace.say("❌", "☹️");
-        // Add one more new random letter to hand as a penalty
+        // Unmark letter in hand
         const hand = this.mainScene.getHand();
-        const penaltyLetter = this._getRandomLetter();
-        hand.addLetter(penaltyLetter);
+        hand.unmarkLetter();
+        // Add one more new random letter to hand as a penalty
+        if (hand.getLetters().length < (0, _configDefault.default).MAXIMUM_LETTER_COUNT) {
+            const penaltyLetter = this._getRandomLetter();
+            hand.addLetter(penaltyLetter);
+        }
         // Set old category again after 1 second
         this.mainScene.time.delayedCall((0, _configDefault.default).GAME_MASTER_REACTION_DURATION, ()=>{
             this._updateCategoryDisplay();
@@ -238809,10 +238813,161 @@ class GameMaster {
             hand.addLetter(randomLetter);
         }
     }
-    _getRandomLetter() {
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const randomIndex = Math.floor(Math.random() * letters.length);
-        return letters[randomIndex];
+    // private _getRandomLetterPrimitive() {
+    //   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    //   const randomIndex = Math.floor(Math.random() * letters.length);
+    //   return letters[randomIndex];
+    // }
+    _getRandomLetter(language = "german") {
+        // This object contains the frequency of letters in different languages at the start of a word.
+        const frequencies = {
+            english: {
+                "T": 20,
+                "A": 19,
+                "I": 10,
+                "S": 10,
+                "O": 9,
+                "C": 7,
+                "M": 5,
+                "F": 5,
+                "P": 5,
+                "W": 5,
+                "H": 5,
+                "D": 4,
+                "B": 4,
+                "R": 4,
+                "L": 3,
+                "G": 2,
+                "U": 2,
+                "E": 2,
+                "N": 2,
+                "J": 1,
+                "K": 1,
+                "V": 1,
+                "Y": 1,
+                "Q": 1,
+                "Z": 1,
+                "X": 1
+            },
+            french: {
+                "C": 20,
+                "S": 18,
+                "P": 17,
+                "A": 16,
+                "D": 15,
+                "L": 14,
+                "M": 13,
+                "R": 12,
+                "T": 11,
+                "E": 10,
+                "B": 9,
+                "V": 8,
+                "N": 7,
+                "F": 6,
+                "G": 5,
+                "H": 4,
+                "O": 3,
+                "U": 2,
+                "J": 2,
+                "Q": 1,
+                "Y": 1,
+                "Z": 1,
+                "K": 1,
+                "W": 1,
+                "X": 1
+            },
+            german: {
+                "D": 20,
+                "G": 18,
+                "B": 17,
+                "E": 15,
+                "A": 14,
+                "F": 13,
+                "S": 12,
+                "K": 10,
+                "L": 9,
+                "M": 8,
+                "Z": 7,
+                "N": 6,
+                "H": 5,
+                "T": 4,
+                "C": 3,
+                "R": 2,
+                "U": 2,
+                "W": 2,
+                "O": 1,
+                "J": 1,
+                "P": 1,
+                "Q": 1,
+                "V": 1,
+                "X": 1,
+                "Y": 1
+            },
+            italian: {
+                "C": 20,
+                "S": 18,
+                "A": 17,
+                "P": 16,
+                "L": 15,
+                "D": 14,
+                "M": 13,
+                "R": 12,
+                "T": 11,
+                "B": 10,
+                "E": 9,
+                "F": 8,
+                "G": 7,
+                "N": 6,
+                "O": 5,
+                "U": 4,
+                "I": 3,
+                "V": 2,
+                "H": 1,
+                "Z": 1,
+                "Q": 1,
+                "J": 1,
+                "K": 1,
+                "W": 1,
+                "X": 1,
+                "Y": 1
+            },
+            spanish: {
+                "C": 20,
+                "P": 18,
+                "A": 17,
+                "S": 16,
+                "D": 15,
+                "L": 14,
+                "M": 13,
+                "R": 12,
+                "T": 11,
+                "B": 10,
+                "E": 9,
+                "F": 8,
+                "G": 7,
+                "N": 6,
+                "O": 5,
+                "U": 4,
+                "I": 3,
+                "V": 2,
+                "H": 1,
+                "Z": 1,
+                "Q": 1,
+                "J": 1,
+                "K": 1,
+                "W": 1,
+                "X": 1,
+                "Y": 1,
+                "\xd1": 1
+            }
+        };
+        // Throw error if language is not supported
+        if (!frequencies[language]) throw new Error(`Language "${language}" is not supported to retrieve random letter.`);
+        const frequency = frequencies[language];
+        let letterPool = "";
+        for(const letter in frequency)letterPool += letter.repeat(frequency[letter]);
+        const randomIndex = Math.floor(Math.random() * letterPool.length);
+        return letterPool[randomIndex];
     }
     _updateCategoryDisplay() {
         this.gameMasterFace.say(`Kategorie: ${this.currentCategory}`);
@@ -238837,10 +238992,19 @@ Config.GAME_MASTER_FACE_X = 60;
 Config.GAME_MASTER_FACE_Y = 70;
 Config.GAME_MASTER_MESSAGE_X = 130;
 Config.GAME_MASTER_MESSAGE_Y = 70;
+// Hand full of cards
 Config.HAND_X_POSITION = 20;
-Config.HAND_Y_POSITION = 150;
+Config.HAND_Y_POSITION = 160;
+Config.HAND_GAP_BETWEEN_LETTERS = 120;
+Config.HAND_MARK_SHIFT_Y = -15;
+// 🃏 Card
+Config.LETTER_CARD_WIDTH = 100;
+Config.LETTER_CARD_HEIGHT = 150;
+Config.LETTER_CARD_RADIUS = 20;
+// 🖊️ Input Field
 Config.INPUT_FIELD_X = 50;
-Config.INPUT_FIELD_Y = 250;
+Config.INPUT_FIELD_Y = 400;
+Config.INPUT_FIELD_FONT_SIZE = "42px";
 Config.INPUT_FIELD_FONT_COLOR = (0, _colorKeysDefault.default).WHITE;
 Config.INPUT_FIELD_FONT_COLOR_INCORRECT = (0, _colorKeysDefault.default).RED;
 Config.SPEECH_BUBBLE_HEIGHT = 70;
@@ -238856,7 +239020,8 @@ Config.CATEGORIES = [
     "Automarke",
     "Vorname"
 ];
-Config.START_LETTER_COUNT = 5;
+Config.START_LETTER_COUNT = 6;
+Config.MAXIMUM_LETTER_COUNT = 7;
 Config.GAME_MASTER_REACTION_DURATION = 1500;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../../../library/designsystem/consts/ColorKeys":"9lnJX"}],"9lnJX":[function(require,module,exports) {
@@ -239478,38 +239643,153 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _config = require("~/game/Config");
 var _configDefault = parcelHelpers.interopDefault(_config);
+var _letterCard = require("~/game/LetterCard");
+var _letterCardDefault = parcelHelpers.interopDefault(_letterCard);
 class Hand {
     constructor(mainScene){
-        this.letters = [];
+        this.letterObjects = [];
         this.mainScene = mainScene;
     }
     addLetter(letter) {
-        this.letters.push(letter);
-        this._updateHandDisplay();
+        const lastLetterObject = this.letterObjects[this.letterObjects.length - 1];
+        const letterCard = new (0, _letterCardDefault.default)(this.mainScene, 0, 0, letter);
+        this.mainScene.add.existing(letterCard);
+        const letterPosition = lastLetterObject ? lastLetterObject.position + 1 : 1;
+        this.letterObjects.push({
+            letter: letter,
+            position: letterPosition,
+            letterCard: letterCard
+        });
+        // Fly in letter
+        letterCard.setAlpha(0);
+        letterCard.setPosition((0, _configDefault.default).GAME_MASTER_FACE_X, (0, _configDefault.default).GAME_MASTER_FACE_Y);
+        this.mainScene.tweens.add({
+            targets: letterCard,
+            alpha: 1,
+            duration: 500,
+            ease: "Power2"
+        });
+        this.mainScene.tweens.add({
+            targets: letterCard,
+            x: (0, _configDefault.default).HAND_X_POSITION + (letterPosition - 1) * (0, _configDefault.default).HAND_GAP_BETWEEN_LETTERS,
+            y: (0, _configDefault.default).HAND_Y_POSITION,
+            duration: 500,
+            ease: "Power2"
+        });
     }
     removeLetter(letter) {
-        const index = this.letters.indexOf(letter);
-        if (index > -1) this.letters.splice(index, 1);
-        this._updateHandDisplay();
-    }
-    hasLetter(letter) {
-        return this.letters.includes(letter);
-    }
-    _updateHandDisplay() {
-        if (this.letterContainer) this.letterContainer.destroy();
-        this.letterContainer = this.mainScene.add.container((0, _configDefault.default).HAND_X_POSITION, (0, _configDefault.default).HAND_Y_POSITION);
-        this.letters.forEach((letter, index)=>{
-            const letterText = this.mainScene.add.text(index * 50, 0, letter, {
-                fontSize: "32px",
-                color: "#fff"
+        // Remove letter from letterObjects. Only remove the first occurrence of the letter.
+        const letterObjectToRemove = this.letterObjects.find((letterObject)=>letterObject.letter === letter);
+        if (letterObjectToRemove) this.letterObjects = this.letterObjects.filter((letterObject)=>letterObject !== letterObjectToRemove);
+        // Move letter to game master face position and fade out
+        if (letterObjectToRemove) {
+            const letterCard = letterObjectToRemove.letterCard;
+            // Alpha out the letter
+            this.mainScene.tweens.add({
+                targets: letterCard,
+                alpha: 0,
+                duration: 500,
+                ease: Phaser.Math.Easing.Expo.Out,
+                onComplete: ()=>{
+                    letterCard.destroy();
+                }
             });
-            this.letterContainer.add(letterText);
+            // Move letter a little bit to the bottom
+            this.mainScene.tweens.add({
+                targets: letterCard,
+                x: letterCard.x,
+                y: letterCard.y + 300,
+                duration: 500,
+                ease: Phaser.Math.Easing.Expo.Out
+            });
+        }
+    }
+    /**
+     * Check if letter is in hand
+     * @param letter
+     */ hasLetter(letter) {
+        // Check if letter is in letterObjects
+        return this.letterObjects.some((letterObject)=>letterObject.letter === letter);
+    }
+    /**
+     * Get all letters from hand
+     * @returns {string[]}
+     */ getLetters() {
+        // Get all letter properties from letterObjects
+        return this.letterObjects.map((letterObject)=>letterObject.letter);
+    }
+    /**
+     * Mark letter as active.
+     * We do this by moving it a little bit up.
+     * This is only a visual effect.
+     *
+     * @param letter
+     */ markLetter(letter) {
+        // Check if letter is in letterObjects
+        const letterObject = this.letterObjects.find((letterObject)=>letterObject.letter === letter);
+        if (letterObject) {
+            const letterCard = letterObject.letterCard;
+            this.mainScene.tweens.add({
+                targets: letterCard,
+                y: (0, _configDefault.default).HAND_Y_POSITION + (0, _configDefault.default).HAND_MARK_SHIFT_Y,
+                duration: 200,
+                ease: Phaser.Math.Easing.Expo.Out
+            });
+        }
+    }
+    /**
+     * Unmark letter
+     * We do this by moving all letters back to their original position.
+     */ unmarkLetter() {
+        this.letterObjects.forEach((letterObject)=>{
+            const letterCard = letterObject.letterCard;
+            this.mainScene.tweens.add({
+                targets: letterCard,
+                y: (0, _configDefault.default).HAND_Y_POSITION,
+                duration: 200,
+                ease: Phaser.Math.Easing.Expo.Out
+            });
         });
     }
 }
 exports.default = Hand;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","~/game/Config":"8FUdF"}],"fQ3oK":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","~/game/Config":"8FUdF","~/game/LetterCard":"iZ0fP"}],"iZ0fP":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _config = require("~/game/Config");
+var _configDefault = parcelHelpers.interopDefault(_config);
+var _colorKeys = require("../../../../library/designsystem/consts/ColorKeys");
+var _colorKeysDefault = parcelHelpers.interopDefault(_colorKeys);
+class LetterCard extends Phaser.GameObjects.Container {
+    constructor(scene, x, y, letter){
+        super(scene, x, y);
+        // Create the card background
+        const cardBackground = scene.add.graphics();
+        cardBackground.fillStyle(0xFFFFFF, 1);
+        cardBackground.fillRoundedRect(0, 0, (0, _configDefault.default).LETTER_CARD_WIDTH, (0, _configDefault.default).LETTER_CARD_HEIGHT, (0, _configDefault.default).LETTER_CARD_RADIUS);
+        cardBackground.lineStyle(8, (0, _colorKeysDefault.default).GREY_0X, 1);
+        cardBackground.strokeRoundedRect(0, 0, (0, _configDefault.default).LETTER_CARD_WIDTH, (0, _configDefault.default).LETTER_CARD_HEIGHT, (0, _configDefault.default).LETTER_CARD_RADIUS);
+        // Create the shadow
+        const shadow = scene.add.graphics();
+        shadow.fillStyle(0x000000, 0.5);
+        shadow.fillRoundedRect(0, 0, (0, _configDefault.default).LETTER_CARD_WIDTH, (0, _configDefault.default).LETTER_CARD_HEIGHT, (0, _configDefault.default).LETTER_CARD_RADIUS);
+        shadow.setAlpha(0.7);
+        shadow.setPosition(8, 8);
+        shadow.setDepth(-1); // Set the shadow behind the card
+        this.add(shadow);
+        // Create the letter text
+        this.letterText = scene.add.text(50, 75, letter, {
+            fontSize: "64px",
+            color: "#000"
+        }).setOrigin(0.5, 0.5);
+        this.add(cardBackground);
+        this.add(this.letterText);
+    }
+}
+exports.default = LetterCard;
+
+},{"~/game/Config":"8FUdF","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../../../library/designsystem/consts/ColorKeys":"9lnJX"}],"fQ3oK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _tslib = require("tslib");
@@ -239529,7 +239809,7 @@ class InputField {
     }
     _createText() {
         this.text = this.mainScene.add.text((0, _configDefault.default).INPUT_FIELD_X, (0, _configDefault.default).INPUT_FIELD_Y, "", {
-            fontSize: "32px",
+            fontSize: (0, _configDefault.default).INPUT_FIELD_FONT_SIZE,
             color: (0, _configDefault.default).INPUT_FIELD_FONT_COLOR
         });
     }
@@ -239557,19 +239837,25 @@ class InputField {
                 // Check if the last letter is a "_". If yes, remove it.
                 if (this.text.text.endsWith(this.blinkChar)) this.text.setText(this.text.text.slice(0, -1));
                 this.text.setText(this.text.text + event.key);
-                this._adjustTextColor();
+                this._reactToInputChange();
             } else if (event.key === "Backspace") {
                 // Check if the last letter is a "_". If yes, remove it.
                 if (this.text.text.endsWith(this.blinkChar)) this.text.setText(this.text.text.slice(0, -1));
                 this.text.setText(this.text.text.slice(0, -1));
-                this._adjustTextColor();
+                this._reactToInputChange();
             } else if (event.key === "Enter" && this.text.text.length > 0 && this.mainScene.getHand().hasLetter(this.text.text.charAt(0).toUpperCase())) this._handleEnter();
         });
     }
-    _adjustTextColor() {
-        // Check if the text starts with a letter that is not in the hand, color the text red, otherwise white
-        const textColor = this.text.text === "" || this.mainScene.getHand().hasLetter(this.text.text.charAt(0).toUpperCase()) ? (0, _configDefault.default).INPUT_FIELD_FONT_COLOR : (0, _configDefault.default).INPUT_FIELD_FONT_COLOR_INCORRECT;
+    _reactToInputChange() {
+        const hand = this.mainScene.getHand();
+        const startingLetterOfInput = this.text.text.charAt(0).toUpperCase();
+        const letterIsInHand = hand.hasLetter(startingLetterOfInput);
+        // Check if the new text starts with a letter that is not in the hand, color the text red, otherwise white
+        const textColor = this.text.text === "" || letterIsInHand ? (0, _configDefault.default).INPUT_FIELD_FONT_COLOR : (0, _configDefault.default).INPUT_FIELD_FONT_COLOR_INCORRECT;
         this.text.setColor(textColor);
+        if (letterIsInHand) hand.markLetter(startingLetterOfInput);
+        // If input text is empty, or letter is not in hand unmark letter
+        if (this.text.text === "" || !letterIsInHand) hand.unmarkLetter();
     }
     /**
      * Handle enter key pressed
