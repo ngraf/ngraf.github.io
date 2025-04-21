@@ -582,9 +582,6 @@ exports.default = new (0, _phaserDefault.default).Game({
         autoCenter: (0, _phaserDefault.default).Scale.CENTER_BOTH
     }
 });
-// Trigger Keyboard on mobile devices. The function is defined in the "index.html" file.
-// @ts-ignore
-triggerKeyboard();
 
 },{"phaser":"9U0wC","./scenes/Preloader":"gPcEg","phaser3-rex-plugins/templates/ui/ui-plugin.js":"kCKu7","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","~/scenes/MainScene":"7hl19","~/scenes/End":"gpPKb","../../../library/designsystem/consts/ColorKeys":"9lnJX"}],"9U0wC":[function(require,module,exports) {
 var process = require("b4fd6328bb67843a");
@@ -239831,7 +239828,7 @@ class InputField {
      * Every time a character is pressed, add it to the text.
      * @private
      */ _initKeyboardListener() {
-        this.mainScene.input.keyboard.on("keydown", (event)=>{
+        const listenerFunction = (event)=>{
             // Check if the key is a letter or a german umlaut
             if (event.key.length === 1 && event.key.match(/^[a-zA-ZäöüÄÖÜß]$/)) {
                 // Check if the last letter is a "_". If yes, remove it.
@@ -239844,7 +239841,18 @@ class InputField {
                 this.text.setText(this.text.text.slice(0, -1));
                 this._reactToInputChange();
             } else if (event.key === "Enter" && this.text.text.length > 0 && this.mainScene.getHand().hasLetter(this.text.text.charAt(0).toUpperCase())) this._handleEnter();
+        };
+        // For mobile devices, we need to listen to the input from a hidden input field
+        this.hiddenInputElement = document.getElementById("hiddenInput");
+        if (!this.hiddenInputElement) throw new Error("Hidden input element with id 'hiddenInput' not found in the DOM");
+        this.hiddenInputElement.addEventListener("keydown", listenerFunction);
+        // Workaround: In case we click away from canvas, we need to focus the hidden input element again
+        // If user clicks on the canvas, focus the hidden input element
+        this.mainScene.input.on("pointerdown", ()=>{
+            this.hiddenInputElement.focus();
         });
+        // Autofocus the hidden input element when the scene is created
+        this.hiddenInputElement.focus();
     }
     _reactToInputChange() {
         const hand = this.mainScene.getHand();
@@ -239864,6 +239872,7 @@ class InputField {
         return (0, _tslib.__awaiter)(this, void 0, void 0, function*() {
             const answer = this.text.text.replace(/_/g, ""); // Remove the blinking cursor
             this.text.setText(""); // Clear the text
+            this.hiddenInputElement.value = "";
             yield this.mainScene.getGameMaster().validateAnswer(answer);
         });
     }

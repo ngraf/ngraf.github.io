@@ -16,7 +16,7 @@
 		<!-- Start of Workaround -->
 		<!-- This is a workaround to trigger the keyboard on mobile devices -->
 		<input id="hiddenInput" style="position: absolute; top: -1000px">
-		<script>function triggerKeyboard() {
+		<script>function focusHiddenInputField() {
     const input = document.getElementById("hiddenInput");
     input.focus();
 }
