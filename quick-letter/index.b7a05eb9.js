@@ -238732,11 +238732,17 @@ class GameMaster {
             this._nameNewCategory();
             // Create input
             new (0, _inputHandlerDefault.default)(this.mainScene);
+            // Add button to reset category.
+            const resetButton = new (0, _buttonDefault.default)(this.mainScene, this.mainScene.sys.canvas.width - 70, 70, 60, 60, "\uD83D\uDD04", ()=>this._resetCategory(), {
+                fontColor: (0, _colorKeysDefault.default).BLACK,
+                fontSize: "24px"
+            });
+            this.mainScene.add.existing(resetButton);
         };
         if (showIntro) {
             // Set game master face to happy
             this.gameMasterFace.say((0, _configDefault.default).INTRO_TEXT, "\uD83D\uDE42");
-            this.mainScene.input.once("pointerdown", ()=>{
+            this.mainScene.input.once("pointerup", ()=>{
                 if (!theme) this.chooseTheme();
                 else finalStartGame();
             });
@@ -239007,7 +239013,17 @@ class GameMaster {
         return letterPool[randomIndex];
     }
     _updateCategoryDisplay() {
-        this.gameMasterFace.say(`Kategorie: ${this.currentCategory}`);
+        this.gameMasterFace.say(`${this.currentCategory}`);
+    }
+    _resetCategory() {
+        // Add penalty letter to hand
+        const hand = this.mainScene.getHand();
+        if (hand.getLetters().length < (0, _configDefault.default).MAXIMUM_LETTER_COUNT) {
+            const penaltyLetter = this._getRandomLetter();
+            hand.addLetter(penaltyLetter);
+        }
+        // Set new category
+        this._nameNewCategory();
     }
 }
 exports.default = GameMaster;
@@ -239131,6 +239147,7 @@ Config.INTRO_TEXT = `Hi, Lust eine Runde "Quick Letter" zu spielen?
   - Wenn mir die Antwort gefällt, nehme ich dir Buchstaben ab.
   - Wenn mir die Antwort nicht gefällt, bekommst du einen Strafbuchstaben.
   - Du hast gewonnen, wenn du alle Buchstaben los bist.
+  - Mit Klick auf "🔄" kannst du eine Kategorie überspringen. Das kostet einen Strafbuchstaben.
   
   Klicke um zu beginnen!
   `;
@@ -239867,8 +239884,8 @@ class Button extends Phaser.GameObjects.Container {
             fontColor: (0, _colorKeysDefault.default).WHITE,
             fontSize: "32px",
             strokeColor: (0, _colorKeysDefault.default).WHITE_0X,
-            hoverColor: (0, _colorKeysDefault.default).GREY_VERY_DARK_0X,
-            backgroundColor: (0, _colorKeysDefault.default).GREY_LIGHT_0X,
+            hoverColor: (0, _colorKeysDefault.default).GREY_0X,
+            backgroundColor: (0, _colorKeysDefault.default).GREY_VERY_LIGHT_0X,
             backgroundColorDeactivated: (0, _colorKeysDefault.default).DARKGREY_0X,
             shadowAlpha: 0.3,
             shadowColor: (0, _colorKeysDefault.default).GREY_0X,
@@ -240331,10 +240348,9 @@ class Hand {
         this.mainScene = mainScene;
     }
     addLetter(letter) {
-        const lastLetterObject = this.letterObjects[this.letterObjects.length - 1];
         const letterCard = new (0, _letterCardDefault.default)(this.mainScene, 0, 0, letter);
         this.mainScene.add.existing(letterCard);
-        const letterPosition = lastLetterObject ? lastLetterObject.position + 1 : 1;
+        const letterPosition = this._getNextEmptyPosition();
         this.letterObjects.push({
             letter: letter,
             position: letterPosition,
@@ -240356,6 +240372,17 @@ class Hand {
             duration: 500,
             ease: "Power2"
         });
+    }
+    _getNextEmptyPosition() {
+        for(let i = 1; i <= (0, _configDefault.default).MAXIMUM_LETTER_COUNT; i++){
+            let letterFoundForThisPosition = false;
+            for (let letterObject of this.letterObjects)if (letterObject.position === i) {
+                letterFoundForThisPosition = true;
+                break;
+            }
+            if (!letterFoundForThisPosition) return i;
+        }
+        throw new Error("No empty position found between 1 and " + (0, _configDefault.default).MAXIMUM_LETTER_COUNT + ". This is an expection. It should not happen.");
     }
     removeLetter(letter) {
         // Remove letter from letterObjects. Only remove the first occurrence of the letter.
